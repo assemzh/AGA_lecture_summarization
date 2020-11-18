@@ -9,7 +9,7 @@ class App extends React.Component {
     super(props);
 
     this.state = {
-      page: "edit", // input, main, edit
+      page: "main", // input, main, edit
       url: null,
       fullText: "full text",
       summary: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut aliquet viverra velit fringilla condimentum. Vestibulum convallis ipsum non nunc laoreet venenatis. Morbi lacus turpis, ullamcorper et imperdiet ut, convallis sed ante. Sed vestibulum in arcu id varius. Duis dapibus aliquet pretium. Maecenas tristique, sem in interdum pharetra, quam tellus blandit lacus, ut imperdiet nisi metus vel ex. Maecenas sit amet risus eget justo pretium mollis. Sed ac tempor nibh. Suspendisse nec lectus lacus.            In hac habitasse platea dictumst. Nunc eu mi luctus metus commodo elementum nec at ipsum. Morbi nec sapien dapibus, pulvinar lacus nec, ullamcorper turpis. Maecenas venenatis hendrerit ante ut pretium. Donec tristique iaculis justo. Sed et dapibus turpis, sed sodales arcu. Vestibulum nisl ante, luctus in ex vel, maximus viverra risus. Donec at nisi eu felis suscipit tincidunt sed at orci. Etiam porta, leo quis vulputate pellentesque, lectus libero luctus tellus, vel molestie nulla magna in velit. Morbi mattis tincidunt semper. Morbi a dolor quis felis fringilla auctor. Donec rhoncus urna vitae arcu faucibus gravida. Nullam euismod lorem ac ligula vestibulum, non consectetur mauris vestibulum."

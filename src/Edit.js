@@ -37,12 +37,13 @@ class Edit extends React.Component {
                         # Visualizations
                     </div>
                     <div className="col-2" style={{textAlign: "right"}}>
-                        <button type="button" className="btn btn-warning btnEdit"
-                        onClick={() => this.setState({showVideo: !this.state.showVideo})}>{(this.showVideo) ? "Hide Video" : "Show Video"}</button>
-                        <br/>
-                        <br/>
                         <button type="button" className="btn btn-danger btnEdit"
                         onClick={() => this.props.setPage("main")}>Hide Original Text</button>
+                        <br/>
+                        <br/>
+                        <button type="button" className="btn btn-warning btnEdit"
+                        onClick={() => this.setState({showVideo: !this.state.showVideo})}>{(this.showVideo) ? "Hide Video" : "Show Video"}</button>
+
                     </div>
                 </div>
                 
@@ -57,7 +58,7 @@ class Edit extends React.Component {
                                     </div>
                                     <div style={{display: "inline-block", float: "right"}}>
                                         <button type="button" className="btn btn-warning"
-                                         onClick={() => true}>Resummarize</button>
+                                         onClick={() => true}>Summarize</button>
                                     </div>
                                 </div>
                                 <div className="summary min-vh-100">

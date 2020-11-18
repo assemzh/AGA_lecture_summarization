@@ -13,10 +13,23 @@ class Main extends React.Component {
         this.ContentEditable = React.createRef();
     }
 
+    hoverSpan(event) {
+        if (event.target.nodeName === "SPAN") { // IT CAN GET THE TEXT INSIDE THE SPAN, SO PUT EVERY WORD INSIDE A SPAN
+            console.log(event.target.textContent);
+        }
+    }
+
+    componentDidMount() {
+        console.log(this.ContentEditable.current);
+        this.ContentEditable.current.addEventListener("mouseover", this.hoverSpan);
+    }
+
 
 
     render() {
         var btns = ["Low", "Medium", "High"];
+
+        var tmp = "<span>Text 1</span>     <span>Text 2</span>";
 
         return (
             <div className="container-fluid min-vh-100">
@@ -71,7 +84,7 @@ class Main extends React.Component {
                             <div className="summary min-vh-100">
                                 <ContentEditable 
                                 innerRef={this.ContentEditable} 
-                                html={this.props.summary}
+                                html={tmp}
                                 disabled={false}
                                 onChange={this.props.editSummary}/>
                             </div>
