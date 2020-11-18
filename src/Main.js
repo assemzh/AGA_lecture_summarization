@@ -29,8 +29,7 @@ class Main extends React.Component {
                         </div>
                         <div className="row video-info-container">
                             <div>
-                                Title
-                                <br/>
+                                <h4 className="subtitle">Title</h4>
                                 Author
                                 <br/>
                                 # Visualizations
@@ -67,7 +66,7 @@ class Main extends React.Component {
                         <div className="container">
                             <div className="summary-header">
                                 <button type="button" className="btn btn-danger"
-                                onClick={() => this.props.setPage("edit")}>Edit</button>
+                                onClick={() => this.props.setPage("edit")}>Show Original Text</button>
                             </div>
                             <div className="summary min-vh-100">
                                 <ContentEditable 
