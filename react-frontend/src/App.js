@@ -9,7 +9,7 @@ class App extends React.Component {
     super(props);
 
     this.state = {
-      page: "main", // input, main, edit
+      page: "input", // input, main, edit
       url: null,
       fullText: "full text",
       summary: this.createSpanSummary()
