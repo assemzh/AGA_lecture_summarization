@@ -1,38 +1,125 @@
 .App {
   text-align: center;
+  font-family: 'Roboto', sans-serif;
+  background-color: #1d2431;
+  min-height: 100%;
+  color: aliceblue;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+html, body {
+  height: 100%;
+  /* overflow: hidden; */
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.vertical-align {
+  margin-top: 50%;
+  text-align: center;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.summary {
+  padding: 15px 10px 15px 10px;
+  text-align: left;
+  background-color: white;
+  color: black;
+}
+
+.edit-video-info-container {
+  margin: 0px 15px 0px 0px;
+  text-align: left;
+  border: white 1px solid;
+}
+
+.summary-header {
+  margin-top: 10px;
+  padding: 5px 5px 5px 5px;
+  background-color: rgb(243, 243, 243);
+  border-bottom: solid 1px black;
+  text-align: right;
+  color: black;
+}
+
+.edit-summary-header {
+  margin-top: 10px;
+  padding: 5px 5px 5px 5px;
+  background-color: rgb(243, 243, 243);
+  border-bottom: solid 1px black;
+  text-align: center;
+  color: black;
+  padding-top: 10px;
+}
+
+.video {
+  flex-grow: 1;
+  border: none;
+  margin: 0;
+  padding: 0;
+}
+
+.video-container {
   display: flex;
+  width: 100%;
+  height: 50%;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  overflow: hidden;
+  margin-right: 0px;
+  padding: 15px 0px 15px 10px;
 }
 
-.App-link {
-  color: #61dafb;
+.edit-video-container {
+  width: 40%;
+  overflow: hidden;
+  margin-right: 0px;
+  margin: auto;
+  padding: 15px 0px 15px 10px;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.video-info-container {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  overflow: hidden;
+  margin-right: 0px;
+  padding: 0px 0px 0px 10px;
+  text-align: left;
+}
+
+.video-col {
+  padding-right: 0;
+}
+
+.text-col {
+  padding-left: 0;
+}
+
+hr {
+  border-color: white;
+  margin-right: 15px;
+  margin-top: 5px;
+  margin-left: -5px;
+}
+
+.complexity-info-container {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  overflow: hidden;
+  margin-right: 0px;
+  padding: 0px 0px 0px 10px;
+  text-align: left;
+  margin-bottom: 4px;
+}
+
+.subtitle {
+  margin-bottom: 2px;
+}
+
+.detail-btn {
+  margin-right: 5px;
+  margin-left: 5px;
+  display: inline-block;
+}
+
+.col-btn {
+  margin-top: 5%;
+  margin-bottom: 0;
 }
