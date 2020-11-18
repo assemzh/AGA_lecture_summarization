@@ -7,29 +7,41 @@ class Main extends React.Component {
         super(props);
 
         this.state = {
-            detail: "Medium"
+            detail: "Medium",
+            mouseOverTimeout: false,
+            selectedWord: null
         }
 
         this.ContentEditable = React.createRef();
+        this.hoverSpan = this.hoverSpan.bind(this);
     }
 
+    // IT CAN GET THE TEXT INSIDE THE SPAN, SO PUT EVERY WORD INSIDE A SPAN
     hoverSpan(event) {
-        if (event.target.nodeName === "SPAN") { // IT CAN GET THE TEXT INSIDE THE SPAN, SO PUT EVERY WORD INSIDE A SPAN
-            console.log(event.target.textContent);
+        if (event.target.nodeName === "SPAN") { 
+            // console.log(event.target.textContent);
+            this.setState({selectedWord: event.target.textContent})
+            // if (this.state.mouseOverTimeout) {
+            //     clearTimeout(this.state.mouseOverTimeout);
+            // }
+
+            // this.mouseOverTimeout = setTimeout(() => {
+            //     console.log(event.target.textContent);
+            //     this.setState()
+            //     this.state.mouseOverTimeout = false;
+            // }, 1000)
         }
     }
 
     componentDidMount() {
         console.log(this.ContentEditable.current);
-        this.ContentEditable.current.addEventListener("mouseover", this.hoverSpan);
+        this.ContentEditable.current.addEventListener("dblclick", this.hoverSpan);
     }
 
 
 
     render() {
         var btns = ["Low", "Medium", "High"];
-
-        var tmp = "<span>Text 1</span>     <span>Text 2</span>";
 
         return (
             <div className="container-fluid min-vh-100">
@@ -81,12 +93,25 @@ class Main extends React.Component {
                                 <button type="button" className="btn btn-danger"
                                 onClick={() => this.props.setPage("edit")}>Show Original Text</button>
                             </div>
-                            <div className="summary min-vh-100">
+                            <div className="summary">
+                            {(this.state.selectedWord !== null) ? 
+                                <div className="container-fluid add-info">
+                                    <h3 className="subtitle title-add-info">{this.state.selectedWord}</h3>
+                                    <button type="button" className="btn btn-danger btnEdit btn-add-info"
+                                        onClick={() => this.setState({selectedWord: null})}>Close</button>
+                                    <div>
+                                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis at ante a magna eleifend vulputate. Nam a molestie purus. Pellentesque sed lacus vitae dui faucibus maximus. Mauris id neque eu nulla molestie tristique. Praesent ultrices posuere arcu ac elementum. Aenean pulvinar sed mauris quis consequat. 
+                                    </div>
+                                </div> 
+                                :
+                                <div/>
+                                }
                                 <ContentEditable 
                                 innerRef={this.ContentEditable} 
-                                html={tmp}
+                                html={this.props.summary}
                                 disabled={false}
                                 onChange={this.props.editSummary}/>
+                                
                             </div>
                         </div>
                         
