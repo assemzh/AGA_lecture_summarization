@@ -25,7 +25,7 @@ def find_wiki():
     try:
         result = wikipedia.summary(keyword, sentences=1)
         page = wikipedia.page(keyword)
-        return jsonify({"result": result, "url": page.url, "keyword": keyword})
+        return jsonify({"result": result, "url": page.url, "keyword": page.title})
     except:
         return jsonify({"result": None, "url": None, "keyword": None})
 
