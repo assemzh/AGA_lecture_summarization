@@ -7,7 +7,7 @@ from flask import Flask, jsonify, request
 app = Flask(__name__)
 CORS(app)
 
-@app.route('/summary', methods=['POST'])
+@app.route('/flask-backend/summary', methods=['POST'])
 def say_hello_world():
     data = request.get_json()
     body = data["fullText"]

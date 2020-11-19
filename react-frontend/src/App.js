@@ -37,7 +37,7 @@ class App extends React.Component {
     const data = this.state;
 
     trackPromise(
-      fetch('/summary', {
+      fetch('/flask-backend/summary', {
         method: 'POST', // or 'PUT'
         headers: {
           'Content-Type': 'application/json',

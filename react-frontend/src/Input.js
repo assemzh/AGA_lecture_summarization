@@ -26,13 +26,13 @@ class Input extends React.Component {
                                 <input type="text" className="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default"
                                 onChange={(event) => this.setState({url: event.target.value})}/>
                                 <div className="input-group-append">
-                                    <button className="btn btn-secondary" type="button" onClick={() => this.props.setVideo(this.state.url)}>Summarize</button>
+                                    <button className="btn btn-secondary" type="button" onClick={() => this.props.setVideo(this.state.url)}>Submit</button>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div className="col-3"></div>
-                    
+
                 </div>
             </div>
         )
