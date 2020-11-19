@@ -18,7 +18,7 @@ class Main extends React.Component {
 
     // IT CAN GET THE TEXT INSIDE THE SPAN, SO PUT EVERY WORD INSIDE A SPAN
     hoverSpan(event) {
-        if (event.target.nodeName === "SPAN") { 
+        if (event.target.nodeName === "SPAN") {
             // console.log(event.target.textContent);
             this.setState({selectedWord: event.target.textContent})
             // if (this.state.mouseOverTimeout) {
@@ -36,6 +36,12 @@ class Main extends React.Component {
     componentDidMount() {
         console.log(this.ContentEditable.current);
         this.ContentEditable.current.addEventListener("dblclick", this.hoverSpan);
+    }
+
+    handleClick(name) {
+      console.log(name);
+      this.setState({detail: name});
+      this.props.setDetail(name);
     }
 
 
@@ -59,7 +65,7 @@ class Main extends React.Component {
                                 <br/>
                                 # Visualizations
                             </div>
-                            
+
                         </div>
                         <hr/>
                         <div className="row complexity-info-container">
@@ -73,7 +79,7 @@ class Main extends React.Component {
                                     {btns.map((name, idx) => (
                                         <button type="button" key={"btn" + name}
                                         className={(name === this.state.detail)? "btn btn-light detail-btn" : "btn btn-dark detail-btn"}
-                                        onClick={() => this.setState({detail: name})}>
+                                        onClick={() => this.handleClick(name)}>
                                             {name}
                                         </button>
                                     ))}
@@ -83,7 +89,7 @@ class Main extends React.Component {
                                 </div>
                             </div>
                             </div>
-                            
+
                         </div>
                         <hr/>
                     </div>
@@ -94,27 +100,27 @@ class Main extends React.Component {
                                 onClick={() => this.props.setPage("edit")}>Show Original Text</button>
                             </div>
                             <div className="summary">
-                            {(this.state.selectedWord !== null) ? 
+                            {(this.state.selectedWord !== null) ?
                                 <div className="container-fluid add-info">
                                     <h3 className="subtitle title-add-info">{this.state.selectedWord}</h3>
                                     <button type="button" className="btn btn-danger btnEdit btn-add-info"
                                         onClick={() => this.setState({selectedWord: null})}>Close</button>
                                     <div>
-                                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis at ante a magna eleifend vulputate. Nam a molestie purus. Pellentesque sed lacus vitae dui faucibus maximus. Mauris id neque eu nulla molestie tristique. Praesent ultrices posuere arcu ac elementum. Aenean pulvinar sed mauris quis consequat. 
+                                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis at ante a magna eleifend vulputate. Nam a molestie purus. Pellentesque sed lacus vitae dui faucibus maximus. Mauris id neque eu nulla molestie tristique. Praesent ultrices posuere arcu ac elementum. Aenean pulvinar sed mauris quis consequat.
                                     </div>
-                                </div> 
+                                </div>
                                 :
                                 <div/>
                                 }
-                                <ContentEditable 
-                                innerRef={this.ContentEditable} 
+                                <ContentEditable
+                                innerRef={this.ContentEditable}
                                 html={this.props.summary}
                                 disabled={false}
                                 onChange={this.props.editSummary}/>
-                                
+
                             </div>
                         </div>
-                        
+
                     </div>
                 </div>
             </div>

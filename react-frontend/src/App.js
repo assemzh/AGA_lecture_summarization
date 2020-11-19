@@ -13,7 +13,8 @@ class App extends React.Component {
       page: "input", // input, main, edit
       url: null,
       fullText: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis at ante a magna eleifend vulputate. Nam a molestie purus. Pellentesque sed lacus vitae dui faucibus maximus. Mauris id neque eu nulla molestie tristique. Praesent ultrices posuere arcu ac elementum. Aenean pulvinar sed mauris quis consequat. Mauris vitae tincidunt lorem, non aliquam purus. Nunc interdum, massa ut vestibulum ornare, dolor turpis dictum urna, vel pharetra risus libero a leo. Vivamus volutpat diam et leo convallis elementum. Sed et eros sit amet diam porta vestibulum. Aliquam iaculis, dolor nec cursus viverra, eros nulla lobortis orci, id sollicitudin est nunc sit amet massa. Nam posuere id erat quis tristique. Sed rutrum augue nec enim venenatis accumsan. Curabitur iaculis convallis mi, eu volutpat ex sollicitudin eu. Donec feugiat, lorem vitae mattis convallis, nunc nunc accumsan purus, nec sollicitudin nisi lectus non risus. Curabitur vel tortor enim. Praesent mollis rhoncus lacus, sed tincidunt justo vehicula et. Duis euismod, libero feugiat auctor luctus, metus risus pellentesque diam, id fringilla ante sapien eu nunc. In mollis dolor vitae nulla dapibus finibus. Praesent fringilla purus quis nisi tristique dignissim. Integer ut metus mauris. Cras tincidunt vitae nulla et efficitur. Vivamus egestas, lacus quis dapibus porta, neque urna sagittis velit, vel dictum est ante id eros. Proin orci nisi, faucibus nec imperdiet non, mattis vel tellus. Maecenas egestas nisl ut eros faucibus, eu interdum dui faucibus. Donec condimentum aliquet enim, eget tincidunt lacus sodales sit amet. Curabitur eleifend dolor et neque semper, eu efficitur nisi rhoncus. Suspendisse potenti. Proin laoreet et elit at porttitor. In pharetra odio elit, a consequat nibh finibus sed. Suspendisse quis nunc condimentum sem dignissim rutrum ut et libero. Interdum et malesuada fames ac ante ipsum primis in faucibus. Cras eget posuere diam. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Praesent eget euismod quam. Morbi commodo ligula sed arcu suscipit, sed volutpat nulla pretium. Donec commodo molestie varius. Maecenas vulputate magna leo, at vestibulum lacus tincidunt vel. Pellentesque vulputate maximus mi et ultricies.",
-      summary: 'this.createSpanSummary()'
+      summary: this.createSpanSummary(),
+      detail_level: 0.4, // default is Medium
     }
 
     this.setVideo = this.setVideo.bind(this);
@@ -21,6 +22,7 @@ class App extends React.Component {
     this.editSummary = this.editSummary.bind(this);
     this.editFullText = this.editFullText.bind(this);
     this.createSpanSummary = this.createSpanSummary.bind(this);
+    this.setDetail = this.setDetail.bind(this);
   }
 
   createSpanSummary() {
@@ -32,6 +34,7 @@ class App extends React.Component {
     // console.log("--------------");
     // console.log(this.state);
     const data = this.state;
+
     fetch('/summary', {
       method: 'POST', // or 'PUT'
       headers: {
@@ -41,7 +44,7 @@ class App extends React.Component {
     })
     .then(response => response.json())
     .then(data => {
-      console.log('Success:', data["result"]);
+      console.log(data["result"]);
       this.setState({summary: data["result"]});
     })
     .catch((error) => {
@@ -51,6 +54,16 @@ class App extends React.Component {
 
   editSummary(event) {
     this.setState({summary: event.target.value});
+  }
+
+  setDetail(value) {
+    var tmp = 0.4;
+    if (value == 'Low'){
+      tmp = 0.1
+    }else if (value == 'High') {
+      tmp = 0.7
+    }
+    this.setState({detail_level: tmp});
   }
 
   editFullText(event) {
@@ -73,7 +86,7 @@ class App extends React.Component {
     if (this.state.page === "input") {
       content = <Input setVideo={this.setVideo}/>
     } else if (this.state.page === "main") {
-      content = <Main summary={this.state.summary} setPage={this.setPage} editSummary={this.editSummary}/>
+      content = <Main detail_level={this.state.detail_level} summary={this.state.summary} setPage={this.setPage} editSummary={this.editSummary} setDetail={this.setDetail} createSpanSummary={this.createSpanSummary}/>
     } else if (this.state.page === "edit") {
       content = <Edit
       summary={this.state.summary} setPage={this.setPage} editSummary={this.editSummary}
