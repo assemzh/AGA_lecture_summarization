@@ -14,8 +14,8 @@ class Edit extends React.Component {
     render() {
         return (
             <div className="container-fluid min-vh-100">
-                {(this.state.showVideo) ? 
-                
+                {(this.state.showVideo) ?
+
                 <div className="row">
                     <div className="col-12 video-col">
                         <div className="row edit-video-container">
@@ -46,7 +46,7 @@ class Edit extends React.Component {
 
                     </div>
                 </div>
-                
+
 
 
                 <div className="row">
@@ -58,12 +58,12 @@ class Edit extends React.Component {
                                     </div>
                                     <div style={{display: "inline-block", float: "right"}}>
                                         <button type="button" className="btn btn-warning"
-                                         onClick={() => true}>Summarize</button>
+                                         onClick={() => this.props.createSpanSummary()}>Summarize</button>
                                     </div>
                                 </div>
                                 <div className="summary min-vh-100">
-                                    <ContentEditable 
-                                    innerRef={this.ContentEditable} 
+                                    <ContentEditable
+                                    innerRef={this.ContentEditable}
                                     html={this.props.fullText}
                                     disabled={false}
                                     onChange={this.props.editFullText}/>
@@ -77,8 +77,8 @@ class Edit extends React.Component {
                                     <h4>Summary</h4>
                                 </div>
                                 <div className="summary min-vh-100">
-                                    <ContentEditable 
-                                    innerRef={this.ContentEditable} 
+                                    <ContentEditable
+                                    innerRef={this.ContentEditable}
                                     html={this.props.summary}
                                     disabled={false}
                                     onChange={this.props.editSummary}/>
