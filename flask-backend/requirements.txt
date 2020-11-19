@@ -19,13 +19,16 @@ backports.shutil-get-terminal-size==1.0.0
 backports.tempfile==1.0
 backports.weakref==1.0.post1
 beautifulsoup4==4.9.1
+bert-extractive-summarizer==0.5.1
 bitarray @ file:///opt/concourse/worker/volumes/live/9034c98d-f3e3-4444-48f0-092269ed9919/volume/bitarray_1594753940633/work
 bkcharts==0.2
 bleach==3.1.5
+blis==0.4.1
 bokeh @ file:///opt/concourse/worker/volumes/live/eb4a1f42-db74-4fc3-7f34-0189ef49c1a1/volume/bokeh_1593187606262/work
 boto==2.49.0
 Bottleneck==1.3.2
 brotlipy==0.7.0
+catalogue==1.0.0
 certifi==2020.6.20
 cffi==1.14.0
 chardet==3.0.4
@@ -40,9 +43,11 @@ conda-verify==3.4.2
 contextlib2==0.6.0.post1
 cryptography==2.9.2
 cycler==0.10.0
+cymem==2.0.4
 Cython @ file:///opt/concourse/worker/volumes/live/6158b663-a4ca-4e19-7e05-8807e4f79146/volume/cython_1594835048880/work
 cytoolz==0.10.1
 dask @ file:///tmp/build/80754af9/dask-core_1594156306305/work
+dataclasses==0.6
 decorator==4.4.2
 defusedxml==0.6.0
 diff-match-patch @ file:///tmp/build/80754af9/diff-match-patch_1594828741838/work
@@ -54,6 +59,7 @@ fastcache==1.1.0
 filelock==3.0.12
 flake8==3.8.3
 Flask==1.1.2
+Flask-Cors==3.0.9
 fsspec==0.7.4
 future==0.18.2
 gevent @ file:///opt/concourse/worker/volumes/live/78aec834-bbf0-47a7-799f-96dd2cf589ab/volume/gevent_1593009579767/work
@@ -105,6 +111,7 @@ more-itertools==8.4.0
 mpmath==1.1.0
 msgpack==1.0.0
 multipledispatch==0.6.0
+murmurhash==1.0.4
 navigator-updater==0.2.1
 nbconvert @ file:///opt/concourse/worker/volumes/live/70406b39-619d-477e-7507-0cc36a02f91a/volume/nbconvert_1594376816864/work
 nbformat==5.0.7
@@ -132,10 +139,13 @@ pexpect @ file:///opt/concourse/worker/volumes/live/8701bb20-ad87-46c7-5108-30c1
 pickleshare @ file:///opt/concourse/worker/volumes/live/93ec39d8-05bb-4f84-7efc-98735bc39b70/volume/pickleshare_1594384101884/work
 Pillow @ file:///opt/concourse/worker/volumes/live/be1e8a56-c4be-4ffe-4fa7-5a0e9c460b1a/volume/pillow_1594307312933/work
 pkginfo==1.5.0.1
+plac==1.1.3
 pluggy==0.13.1
 ply==3.11
+preshed==3.0.4
 prometheus-client==0.8.0
 prompt-toolkit==3.0.5
+protobuf==3.14.0
 psutil==5.7.0
 ptyprocess==0.6.0
 py @ file:///tmp/build/80754af9/py_1593446248552/work
@@ -169,11 +179,13 @@ requests @ file:///tmp/build/80754af9/requests_1592841827918/work
 rope==0.17.0
 Rtree==0.9.4
 ruamel-yaml==0.15.87
+sacremoses==0.0.43
 scikit-image==0.16.2
 scikit-learn @ file:///opt/concourse/worker/volumes/live/47a3ec7c-70dc-43c0-7317-def24a8afaf5/volume/scikit-learn_1592503037057/work
 scipy @ file:///opt/concourse/worker/volumes/live/7f5e51f8-abf3-4409-4c56-a4fb14cc9869/volume/scipy_1593104185999/work
 seaborn==0.10.1
 Send2Trash==1.5.0
+sentencepiece==0.1.91
 simplegeneric==0.8.1
 singledispatch==3.4.0.3
 six==1.15.0
@@ -181,6 +193,7 @@ snowballstemmer==2.0.0
 sortedcollections==1.2.1
 sortedcontainers==2.2.2
 soupsieve==2.0.1
+spacy==2.3.2
 Sphinx @ file:///tmp/build/80754af9/sphinx_1594223420021/work
 sphinxcontrib-applehelp==1.0.2
 sphinxcontrib-devhelp==1.0.2
@@ -192,22 +205,28 @@ sphinxcontrib-websupport @ file:///tmp/build/80754af9/sphinxcontrib-websupport_1
 spyder @ file:///opt/concourse/worker/volumes/live/0e97f897-b36b-4f78-7283-e99903208a48/volume/spyder_1594831780108/work
 spyder-kernels @ file:///opt/concourse/worker/volumes/live/682c8d56-759f-49eb-7914-dbce4a625209/volume/spyder-kernels_1594751614984/work
 SQLAlchemy @ file:///opt/concourse/worker/volumes/live/45657106-f60d-42e1-6501-7d65be3b36ab/volume/sqlalchemy_1593446313078/work
+srsly==1.0.4
 statsmodels==0.11.1
 sympy @ file:///opt/concourse/worker/volumes/live/32ef3b19-6d5e-459b-54bf-1bfa312324b4/volume/sympy_1594236601710/work
 tables==3.6.1
 tblib==1.6.0
 terminado==0.8.3
 testpath==0.4.4
+thinc==7.4.1
 threadpoolctl @ file:///tmp/tmp9twdgx9k/threadpoolctl-2.1.0-py3-none-any.whl
+tokenizers==0.9.3
 toml @ file:///tmp/build/80754af9/toml_1592853716807/work
 toolz==0.10.0
+torch==1.7.0
 tornado==6.0.4
 tqdm @ file:///tmp/build/80754af9/tqdm_1593446365756/work
 traitlets==4.3.3
+transformers==3.5.1
 typing-extensions @ file:///tmp/build/80754af9/typing_extensions_1592847887441/work
 ujson==1.35
 unicodecsv==0.14.1
 urllib3==1.25.9
+wasabi==0.8.0
 watchdog @ file:///opt/concourse/worker/volumes/live/cc0ee7bb-1065-44c4-5867-0fd5d13729e0/volume/watchdog_1593447373245/work
 wcwidth @ file:///tmp/build/80754af9/wcwidth_1593447189090/work
 webencodings==0.5.1
