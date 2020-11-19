@@ -2,7 +2,7 @@
 
 1. Run the backend:
     * cd /flask-backend
-    * python3 app.py
+    * pip/pip3 install requirements.txt
+    * python/python3 app.py
 2. Run the frontend:
-    * yarn start
-    * or npm start 
+    * yarn start / npm start
