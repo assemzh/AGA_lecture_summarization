@@ -2,6 +2,8 @@ import React from 'react';
 import './App.css';
 import ContentEditable from 'react-contenteditable';
 
+
+
 class Main extends React.Component {
     constructor(props) {
         super(props);
@@ -42,11 +44,14 @@ class Main extends React.Component {
       console.log(name);
       this.setState({detail: name});
       this.props.setDetail(name);
+
+
     }
 
 
 
     render() {
+
         var btns = ["Low", "Medium", "High"];
 
         return (
@@ -92,6 +97,14 @@ class Main extends React.Component {
 
                         </div>
                         <hr/>
+                        <div className="col-btn">
+                                <button type="button" key={"btnSummarize"}
+                                className={"btn btn-light detail-btn"}
+                                onClick={this.props.createSpanSummary}>
+                                    Summarize
+                                </button>
+                        </div>
+
                     </div>
                     <div className="col-6 text-col">
                         <div className="container">
