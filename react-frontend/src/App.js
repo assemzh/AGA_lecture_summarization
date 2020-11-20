@@ -77,6 +77,7 @@ class App extends React.Component {
     // check if url is valid
     // get summary, set state
     this.setState({url: url, page: "main"});
+    
   }
 
   setPage(page) {
@@ -85,13 +86,15 @@ class App extends React.Component {
 
   render() {
     let content;
-
+    // console.log(this.state.url)
     if (this.state.page === "input") {
       content = <Input setVideo={this.setVideo}/>
     } else if (this.state.page === "main") {
-      content = <Main detail_level={this.state.detail_level} summary={this.state.summary} setPage={this.setPage} editSummary={this.editSummary} setDetail={this.setDetail} createSpanSummary={this.createSpanSummary}/>
+      content = <Main 
+      url = {this.state.url}
+      detail_level={this.state.detail_level} summary={this.state.summary} setPage={this.setPage} editSummary={this.editSummary} setDetail={this.setDetail} createSpanSummary={this.createSpanSummary}/>
     } else if (this.state.page === "edit") {
-      content = <Edit
+      content = <Edit url = {this.state.url}
       summary={this.state.summary} setPage={this.setPage} editSummary={this.editSummary}
       fullText={this.state.fullText} editFullText={this.editFullText} createSpanSummary={this.createSpanSummary}/>
     }

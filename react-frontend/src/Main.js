@@ -16,6 +16,7 @@ class Main extends React.Component {
 
         this.ContentEditable = React.createRef();
         this.hoverSpan = this.hoverSpan.bind(this);
+        // this.findVideo = this.findVideo.bind(this);
     }
 
     // IT CAN GET THE TEXT INSIDE THE SPAN, SO PUT EVERY WORD INSIDE A SPAN
@@ -48,21 +49,31 @@ class Main extends React.Component {
 
     }
 
-
+    findVideo(url) {
+        url = url.replace("watch?v=", "embed/")
+        var component = <div className="row video-container">
+                            <iframe title="video"
+                            src={url}
+                            className="video"/>
+                        </div>
+        return component
+    }
 
     render() {
 
         var btns = ["Low", "Medium", "High"];
-
+        console.log('main', this.props.url)
+        var component = this.findVideo(this.props.url)
         return (
             <div className="container-fluid min-vh-100">
                 <div className="row">
                     <div className="col-6 video-col">
-                        <div className="row video-container">
+                        {/* <div className="row video-container">
                             <iframe title="video"
                             src="https://www.youtube.com/embed/tgbNymZ7vqY"
                             className="video"/>
-                        </div>
+                        </div> */}
+                        {component}
                         <div className="row video-info-container">
                             <div>
                                 <h4 className="subtitle">Title</h4>
