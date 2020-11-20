@@ -12,18 +12,27 @@ class Edit extends React.Component {
         }
     }
 
+    findVideo(url) {
+        url = url.replace("watch?v=", "embed/")
+        console.log(url)
+        var component = <div className="row edit-video-container">
+                            <iframe title="video"
+                            src={url}
+                            className="video"/>
+                        </div>
+        return component
+    }
+
     render() {
+        console.log('edit', this.props.url)
+        var component = this.findVideo(this.props.url)
         return (
             <div className="container-fluid min-vh-100">
                 {(this.state.showVideo) ?
 
                 <div className="row">
                     <div className="col-12 video-col">
-                        <div className="row edit-video-container">
-                            <iframe title="video"
-                            src="https://www.youtube.com/embed/tgbNymZ7vqY"
-                            className="video"/>
-                        </div>
+                        {component}
                     </div>
                 </div>
                 :
