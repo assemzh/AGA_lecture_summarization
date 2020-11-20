@@ -7,7 +7,8 @@ class Edit extends React.Component {
         super(props);
 
         this.state = {
-            showVideo: false
+            showVideo: false,
+            editMode: false,
         }
     }
 
@@ -42,7 +43,7 @@ class Edit extends React.Component {
                         <br/>
                         <br/>
                         <button type="button" className="btn btn-warning btnEdit"
-                        onClick={() => this.setState({showVideo: !this.state.showVideo})}>{(this.showVideo) ? "Hide Video" : "Show Video"}</button>
+                        onClick={() => this.setState({showVideo: !this.state.showVideo})}>{(this.state.showVideo) ? "Hide Video" : "Show Video"}</button>
 
                     </div>
                 </div>
@@ -73,15 +74,30 @@ class Edit extends React.Component {
 
                         <div className="col-6 text-col">
                             <div className="container">
-                                <div className="edit-summary-header">
-                                    <h4>Summary</h4>
-                                </div>
+                              <div className="edit-summary-header">
+                                  <div style={{display: "inline-block"}}>
+                                      <h4>Summary</h4>
+                                  </div>
+                                  <div style={{display: "inline-block", float: "right"}}>
+                                      <button type="button" className="btn btn-warning btnEdit"
+                                      onClick={() => this.setState({editMode: !this.state.editMode})}>{(this.state.editMode) ? "Save" : "Edit"}</button>
+                                  </div>
+                              </div>
                                 <div className="summary min-vh-100">
+                                  {(this.state.editMode) ?
                                     <ContentEditable
                                     innerRef={this.ContentEditable}
                                     html={this.props.summary}
                                     disabled={false}
                                     onChange={this.props.editSummary}/>
+                                    :
+                                    <ContentEditable
+                                    innerRef={this.ContentEditable}
+                                    html={this.props.sentSpan}
+                                    disabled={true}
+                                    />
+                                  }
+
                                 </div>
                             </div>
                         </div>
