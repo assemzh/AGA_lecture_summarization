@@ -11,7 +11,9 @@ class Main extends React.Component {
         this.state = {
             detail: "Medium",
             mouseOverTimeout: false,
-            selectedWord: null
+            selectedWord: null,
+            wikiDefinition:null,
+            wikiLink:null,
         }
 
         this.ContentEditable = React.createRef();
@@ -23,7 +25,7 @@ class Main extends React.Component {
     hoverSpan(event) {
         if (event.target.nodeName === "SPAN") {
             // console.log(event.target.textContent);
-            this.setState({selectedWord: event.target.textContent})
+            // this.setState({selectedWord: event.target.textContent})
             // if (this.state.mouseOverTimeout) {
             //     clearTimeout(this.state.mouseOverTimeout);
             // }
@@ -33,6 +35,27 @@ class Main extends React.Component {
             //     this.setState()
             //     this.state.mouseOverTimeout = false;
             // }, 1000)
+            console.log(" Input to wiki:");
+            console.log({selectedWord: event.target.textContent});
+            const data = {selectedWord: event.target.textContent};
+
+            fetch('/flask-backend/wiki', {
+              method: 'POST', // or 'PUT'
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify(data),
+            })
+            .then(response => response.json())
+            .then(data => {
+              console.log(data["url"]);
+              this.setState({selectedWord: data["keyword"]})
+              this.setState({wikiDefinition: data["result"]})
+              this.setState({wikiLink: data["url"]})
+            })
+            .catch((error) => {
+              console.error('Error:', error);
+            })
         }
     }
 
@@ -130,7 +153,10 @@ class Main extends React.Component {
                                     <button type="button" className="btn btn-danger btnEdit btn-add-info"
                                         onClick={() => this.setState({selectedWord: null})}>Close</button>
                                     <div>
-                                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis at ante a magna eleifend vulputate. Nam a molestie purus. Pellentesque sed lacus vitae dui faucibus maximus. Mauris id neque eu nulla molestie tristique. Praesent ultrices posuere arcu ac elementum. Aenean pulvinar sed mauris quis consequat.
+                                        <i>{this.state.wikiDefinition}</i>
+                                    </div>
+                                    <div>
+                                        Learn more on  <a href={this.state.wikiLink}>Wikipedia</a>.
                                     </div>
                                 </div>
                                 :
