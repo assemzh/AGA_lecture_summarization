@@ -15,6 +15,8 @@ class App extends React.Component {
       url: null,
       fullText: "",
       summary: null,
+      sentSummary: null,
+      wordSummary: null,
       detail_level: 0.4, // default is Medium
     }
 
@@ -27,7 +29,7 @@ class App extends React.Component {
   }
 
   createSpanSummary() {
-    
+
     console.log(" Input to summarizer:");
     console.log(this.state);
     const data = this.state;
@@ -43,8 +45,11 @@ class App extends React.Component {
       .then(response => response.json())
       .then(data => {
         console.log(data["result"]);
-        var tmp = data["result"].split(" ").map((word) => "<span>" + word + "</span>").join(" ");
-        this.setState({summary: tmp});
+        var wordSpan = data["result"].split(" ").map((word) => "<span>" + word + "</span>").join(" ");
+        var sentSpan = data["result"].split(".").map((sent) => "<span>" + sent + "</span>").join(".");
+        this.setState({wordSpan: wordSpan});
+        this.setState({sentSpan: sentSpan});
+        this.setState({summary: data["result"]});
       })
       .catch((error) => {
         console.error('Error:', error);
@@ -52,8 +57,14 @@ class App extends React.Component {
     );
   }
 
+
   editSummary(event) {
     this.setState({summary: event.target.value});
+    var wordSpan = event.target.value.split(" ").map((word) => "<span>" + word + "</span>").join(" ");
+    var sentSpan = event.target.value.split(".").map((sent) => "<span>" + sent + "</span>").join(".");
+    this.setState({wordSpan: wordSpan});
+    this.setState({sentSpan: sentSpan});
+
   }
 
   setDetail(value) {
@@ -74,7 +85,7 @@ class App extends React.Component {
     // check if url is valid
     // get summary, set state
     this.setState({url: url, page: "main"});
-    
+
   }
 
   setPage(page) {
@@ -87,12 +98,10 @@ class App extends React.Component {
     if (this.state.page === "input") {
       content = <Input setVideo={this.setVideo}/>
     } else if (this.state.page === "main") {
-      content = <Main 
-      url = {this.state.url}
-      detail_level={this.state.detail_level} summary={this.state.summary} setPage={this.setPage} editSummary={this.editSummary} setDetail={this.setDetail} createSpanSummary={this.createSpanSummary}/>
+      content = <Main url = {this.state.url} detail_level={this.state.detail_level} wordSpan={this.state.wordSpan} setPage={this.setPage} editSummary={this.editSummary} setDetail={this.setDetail} createSpanSummary={this.createSpanSummary}/>
     } else if (this.state.page === "edit") {
       content = <Edit url = {this.state.url}
-      summary={this.state.summary} setPage={this.setPage} editSummary={this.editSummary}
+      summary={this.state.summary} sentSpan={this.state.sentSpan} setPage={this.setPage} editSummary={this.editSummary}
       fullText={this.state.fullText} editFullText={this.editFullText} createSpanSummary={this.createSpanSummary}/>
     }
 

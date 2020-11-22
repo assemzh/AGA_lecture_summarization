@@ -164,9 +164,11 @@ class Main extends React.Component {
                                 }
                                 <ContentEditable
                                 innerRef={this.ContentEditable}
+
                                 // html={this.props.summary}
                                 html={this.props.wordSpan}
-                                disabled={false}
+                                // disabled={false}
+                                disabled={true}
                                 onChange={this.props.editSummary}/>
 
                             </div>

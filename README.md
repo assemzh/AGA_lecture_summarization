@@ -2,7 +2,7 @@
 
 1. Run the backend:
     * cd /flask-backend
-    * pip install requirements.txt
+    * pip install -r requirements.txt
     * python app.py
 2. Run the frontend:
     * cd ../react-frontend
