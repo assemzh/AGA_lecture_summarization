@@ -7,3 +7,5 @@
 2. Run the frontend:
     * cd ../react-frontend
     * npm start 
+    
+3. Video must have captions 
