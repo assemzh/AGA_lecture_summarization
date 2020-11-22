@@ -4,6 +4,7 @@ import Input from './Input.js';
 import Main from './Main.js';
 import Edit from './Edit.js';
 import { trackPromise } from 'react-promise-tracker';
+import $ from 'jquery'
 
 
 class App extends React.Component {
@@ -13,11 +14,13 @@ class App extends React.Component {
     this.state = {
       page: "input", // input, main, edit
       url: null,
-      fullText: "",
+      fullText: null,
       summary: null,
       sentSummary: null,
       wordSummary: null,
       detail_level: 0.4, // default is Medium
+      timestamps: null,
+      wordSpan: null,
     }
 
     this.setVideo = this.setVideo.bind(this);
@@ -26,7 +29,60 @@ class App extends React.Component {
     this.editFullText = this.editFullText.bind(this);
     this.createSpanSummary = this.createSpanSummary.bind(this);
     this.setDetail = this.setDetail.bind(this);
+    // this.setFullText = this.setFullText.bind(this);
+
+    this.getScript = this.getScript.bind(this);
   }
+
+
+  getScript(url) {
+      var txt = []
+      var timestamps = []
+      var vid = url.split('v=')[1]
+      var ampersandPosition = vid.indexOf('&')
+      if(ampersandPosition !== -1) {
+          vid = vid.substring(0, ampersandPosition)
+      }
+      // this.setState({vid: vid})
+      var xml_url = "https://video.google.com/timedtext?lang=en&v=" + vid
+      $.ajax({
+      type: "POST",
+      url: xml_url
+      }).done( (response) => {
+          // console.log(response);
+          var xml = response.getElementsByTagName('text')
+          // console.log(xml[0].getAttribute('start'))
+          var len = xml.length
+          for (var i = 0; i < len; i++) {
+              var texti = xml[i].innerHTML
+              // console.log(texti)
+              while (texti.includes('&amp;#39;')) {
+                  texti = texti.replace('&amp;#39;', "'")
+              }
+              while (texti.includes('&amp;quot;')) {
+                  texti = texti.replace('&amp;quot;', '"')
+              }
+              var timestamp = xml[i].getAttribute('start')
+              txt.push(texti)
+              timestamps.push(timestamp)
+          }
+          this.setState({fullText: txt, timestamps: timestamps})
+          console.log(this.state)
+
+          // return txt
+      //    console.log(timestamps)
+      }).fail( (response) => {
+          console.log('here');
+      });
+  }
+
+  setVideo(url) {
+    // check if url is valid
+    // get summary, set state
+    this.setState({url: url, page: "main"});
+
+  }
+
 
   createSpanSummary() {
 
@@ -81,13 +137,6 @@ class App extends React.Component {
     this.setState({fullText: event.target.value});
   }
 
-  setVideo(url) {
-    // check if url is valid
-    // get summary, set state
-    this.setState({url: url, page: "main"});
-
-  }
-
   setPage(page) {
     this.setState({page: page});
   }
@@ -96,13 +145,19 @@ class App extends React.Component {
     let content;
     // console.log(this.state.url)
     if (this.state.page === "input") {
-      content = <Input setVideo={this.setVideo}/>
+      content = <Input getScript = {this.getScript} setVideo={this.setVideo}/>
     } else if (this.state.page === "main") {
-      content = <Main url = {this.state.url} detail_level={this.state.detail_level} wordSpan={this.state.wordSpan} setPage={this.setPage} editSummary={this.editSummary} setDetail={this.setDetail} createSpanSummary={this.createSpanSummary}/>
+      content = <Main url = {this.state.url} summary={this.state.summary} fullText = {this.getScript} detail_level={this.state.detail_level}
+        wordSpan={this.state.wordSpan} setPage={this.setPage} editSummary={this.editSummary}
+        setDetail={this.setDetail} createSpanSummary={this.createSpanSummary}/>
     } else if (this.state.page === "edit") {
       content = <Edit url = {this.state.url}
-      summary={this.state.summary} sentSpan={this.state.sentSpan} setPage={this.setPage} editSummary={this.editSummary}
-      fullText={this.state.fullText} editFullText={this.editFullText} createSpanSummary={this.createSpanSummary}/>
+      summary={this.state.summary} editSummary={this.editSummary}
+      sentSpan={this.state.sentSpan} createSpanSummary={this.createSpanSummary}
+      setPage={this.setPage} fullText={this.state.fullText}
+      timestamps={this.state.timestamps}
+       editFullText={this.editFullText}
+      />
     }
 
     return (

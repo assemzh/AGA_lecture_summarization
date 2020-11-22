@@ -29,7 +29,7 @@ def get_script():
 @app.route('/flask-backend/summary', methods=['POST'])
 def summarize():
     data = request.get_json()
-    body = data["fullText"]
+    body = " ".join(data["fullText"])
     model = Summarizer()
     result = model(body, ratio=data['detail_level'])  # Specified with ratio
     return jsonify({"result":result})

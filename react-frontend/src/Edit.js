@@ -2,18 +2,16 @@ import React from 'react';
 import './App.css';
 import ContentEditable from 'react-contenteditable';
 // import { trackPromise } from 'react-promise-tracker';
-import $ from 'jquery'
 import ReactPlayer from 'react-player'
 
 class Edit extends React.Component {
     constructor(props) {
         super(props);
-
         this.state = {
             showVideo: false,
             script: "",
-            txt: [],
-            timestamps: [],
+            // txt: [],
+            // timestamps: [],
             vid: null,
             editMode: false,
         }
@@ -30,15 +28,15 @@ class Edit extends React.Component {
         //     vid = vid.substring(0, ampersandPosition)
         // }
         var component = <div className="row edit-video-container">
-                            <ReactPlayer ref={player => {this.player = player}} 
-                                        url = {this.props.url} 
+                            <ReactPlayer ref={player => {this.player = player}}
+                                        url = {this.props.url}
                                         onSeek = {this.handleSeek}
                                         playing
                                         controls
                                         width='100%'
                                         // height='100%'
                                         // onSeek={(e)=>console.log('onSeek', e)}
-                                        /> 
+                                        />
                         </div>
         return component
     }
@@ -67,52 +65,13 @@ class Edit extends React.Component {
             // this.player.seekTo(ts/total, )
             // this.player.seekTo(ts)
         }
-        
+
     }
 
-    getScript(url) {
-        var txt = []
-        var timestamps = []
-        var vid = url.split('v=')[1]
-        var ampersandPosition = vid.indexOf('&')
-        if(ampersandPosition !== -1) {
-            vid = vid.substring(0, ampersandPosition)
-        }
-        // this.setState({vid: vid})
-        var xml_url = "https://video.google.com/timedtext?lang=en&v=" + vid
-        $.ajax({
-        type: "POST",
-        url: xml_url
-        }).done( (response) => {                      
-            // console.log(response);
-            var xml = response.getElementsByTagName('text')
-            // console.log(xml[0].getAttribute('start'))
-            var len = xml.length
-            for (var i = 0; i < len; i++) {
-                var texti = xml[i].innerHTML
-                // console.log(texti)
-                while (texti.includes('&amp;#39;')) {
-                    texti = texti.replace('&amp;#39;', "'")
-                } 
-                while (texti.includes('&amp;quot;')) {
-                    texti = texti.replace('&amp;quot;', '"')
-                }
-                var timestamp = xml[i].getAttribute('start')
-                txt.push(texti)
-                timestamps.push(timestamp)
-            }
-            this.setState({txt: txt, timestamps: timestamps})
-            // console.log(txt)
-            return txt
-        //    console.log(timestamps)
-        }).fail( (response) => {
-            console.log('here');
-        });
-    }
 
     render() {
         // console.log('edit', this.props.url)
-        var txt = this.getScript(this.props.url)
+        // var txt = this.getScript(this.props.url)
         var component = this.findVideo(this.props.url)
         // const data = {url: this.props.url};
         // fetch('/flask-backend/get-script', {
@@ -122,7 +81,7 @@ class Edit extends React.Component {
         //     },
         //     body: JSON.stringify(data),
         //     })
-        //     .then(response => 
+        //     .then(response =>
         //     {   console.log(response)
         //         response.json()})
         //     .then(data => {
@@ -132,8 +91,8 @@ class Edit extends React.Component {
         //     console.error('Error:', error);
         // })
 
-        
-        
+
+
         return (
             <div className="container-fluid min-vh-100">
                 {(this.state.showVideo) ?
@@ -182,13 +141,16 @@ class Edit extends React.Component {
                                 <div className="summary min-vh-100">
                                     <ContentEditable
                                     innerRef={this.ContentEditable}
-                                    // html={this.props.fullText}
                                     html = {' '}
-                                    disabled={false}
+                                    disabled={true}
                                     onChange={this.props.editFullText}/>
-                                {this.state.txt.map( (x, i) => (
-                                        <span style={{color:'blue',cursor:'pointer'}} className="text_i" key = {this.state.timestamps[i]} onClick = {() => {this.navigateTo(this.state.timestamps[i])}}>{x + ' '}</span>
+                                  {this.props.fullText.map( (x, i) => (
+                                        <span style={{color:'blue',cursor:'pointer'}} className="text_i"
+                                          key = {this.props.timestamps[i]}
+                                          onClick = {() => {this.navigateTo(this.props.timestamps[i])}}
+                                        >{x  + " "}</span>
                                       ))}
+
                                 </div>
                             </div>
                         </div>
