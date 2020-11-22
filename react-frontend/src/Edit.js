@@ -17,6 +17,8 @@ class Edit extends React.Component {
             vid: null,
             editMode: false,
         }
+
+        // this.handleSeek = this.handleSeek.bind(this.player);
     }
 
     findVideo(url) {
@@ -28,27 +30,47 @@ class Edit extends React.Component {
         //     vid = vid.substring(0, ampersandPosition)
         // }
         var component = <div className="row edit-video-container">
-                            <ReactPlayer ref={this.ref} url = {url} onSeek = {() => this.handleSeek}/>
+                            <ReactPlayer ref={player => {this.player = player}} 
+                                        url = {this.props.url} 
+                                        onSeek = {this.handleSeek}
+                                        playing
+                                        controls
+                                        width='100%'
+                                        // height='100%'
+                                        // onSeek={(e)=>console.log('onSeek', e)}
+                                        /> 
                         </div>
         return component
     }
 
-    handleSeek = e => {
-        // this.setState({ seeking: false })
-        this.player.seekTo(parseFloat(e.target.value))
-      }
-
-    navigateTo(ts) {
-        console.log(ts)
-        this.player.seekTo(ts, 'seconds')
+    handleSeek = p => {
+        console.log('handleSeek', this.player.current)
+        this.player.setState({ seeking: true })
+        // this.player.seekTo(parseFloat(e.target.value))
+        // if(this.player.current !== null) {
+        //     console.log('seeking to', p)
+        this.player.seekTo(p)
+        // }
+        setTimeout(()=>this.player.setState({ seeking: false }), 800)
     }
 
-    ref = player => {
-        this.player = player
-      }
+    navigateTo(ts) {
+        console.log(ts, this.player)
+        if (!this.state.showVideo) {
+            this.setState({showVideo: true})
+        }
+        if (this.player){
+            console.log('HERE', this.player)
+            this.player.props.onSeek(ts)
+            // var total = this.player.current.getDuration()
+            // console.log('total', total)
+            // this.player.seekTo(ts/total, )
+            // this.player.seekTo(ts)
+        }
+        
+    }
 
     getScript(url) {
-        var text = ''
         var txt = []
         var timestamps = []
         var vid = url.split('v=')[1]
@@ -76,11 +98,10 @@ class Edit extends React.Component {
                     texti = texti.replace('&amp;quot;', '"')
                 }
                 var timestamp = xml[i].getAttribute('start')
-                // text.push ( <span style={{color:'blue',cursor:'pointer'}} onClick = {this.navigateTo(timestamp)}> {texti + ' '} </span> )
                 txt.push(texti)
                 timestamps.push(timestamp)
             }
-            this.setState({script: text, txt: txt, timestamps: timestamps})
+            this.setState({txt: txt, timestamps: timestamps})
             // console.log(txt)
             return txt
         //    console.log(timestamps)
