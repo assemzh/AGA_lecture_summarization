@@ -51,7 +51,7 @@ class App extends React.Component {
       type: "POST",
       url: xml_url
       }).done( (response) => {
-          // console.log(response);
+          console.log(response);
           var xml = response.getElementsByTagName('text')
           // console.log(xml[0].getAttribute('start'))
           var len = xml.length
@@ -69,7 +69,7 @@ class App extends React.Component {
               timestamps.push(timestamp)
           }
           this.setState({fullText: txt, timestamps: timestamps})
-          console.log(this.state)
+          this.createSpanSummary();
 
           // return txt
       //    console.log(timestamps)
@@ -89,7 +89,6 @@ class App extends React.Component {
 
 
   createSpanSummary() {
-
     console.log(" Input to summarizer:");
     console.log(this.state);
     const data = this.state;
@@ -137,8 +136,11 @@ class App extends React.Component {
       tmp = 0.1
     }else if (value === 'High') {
       tmp = 0.7
+    } else if (value === "Medium") {
+      tmp = 0.4;
     }
     this.setState({detail_level: tmp});
+    this.createSpanSummary();
   }
 
   editFullText(event) {

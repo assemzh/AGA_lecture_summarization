@@ -165,13 +165,13 @@ class Main extends React.Component {
 
                         </div>
                         <hr/>
-                        <div className="col-btn">
+                        {/* <div className="col-btn">
                                 <button type="button" key={"btnSummarize"}
                                 className={"btn btn-light detail-btn"}
                                 onClick={this.props.createSpanSummary}>
                                     Summarize
                                 </button>
-                        </div>
+                        </div> */}
 
                     </div>
                     <div className="col-6 text-col">
@@ -198,7 +198,9 @@ class Main extends React.Component {
                                 }
                                 <ContentEditable
                                 innerRef={this.ContentEditable}
-                                html={this.props.sentSpan}
+
+                                // html={this.props.summary}
+                                html={(this.props.sentSpan === null) ? "" : this.props.sentSpan}
                                 // disabled={false}
                                 disabled={true}
                                 onChange={this.props.editSummary}/>
