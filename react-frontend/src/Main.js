@@ -1,6 +1,8 @@
 import React from 'react';
 import './App.css';
 import ContentEditable from 'react-contenteditable';
+import $ from 'jquery'
+import ReactPlayer from 'react-player'
 
 
 
@@ -14,6 +16,7 @@ class Main extends React.Component {
             selectedWord: null,
             wikiDefinition:null,
             wikiLink:null,
+            showVideo: false,
         }
 
         this.ContentEditable = React.createRef();
@@ -24,17 +27,6 @@ class Main extends React.Component {
     // IT CAN GET THE TEXT INSIDE THE SPAN, SO PUT EVERY WORD INSIDE A SPAN
     hoverSpan(event) {
         if (event.target.nodeName === "SPAN") {
-            // console.log(event.target.textContent);
-            // this.setState({selectedWord: event.target.textContent})
-            // if (this.state.mouseOverTimeout) {
-            //     clearTimeout(this.state.mouseOverTimeout);
-            // }
-
-            // this.mouseOverTimeout = setTimeout(() => {
-            //     console.log(event.target.textContent);
-            //     this.setState()
-            //     this.state.mouseOverTimeout = false;
-            // }, 1000)
             console.log(" Input to wiki:");
             console.log({selectedWord: event.target.textContent});
             const data = {selectedWord: event.target.textContent};
@@ -56,6 +48,10 @@ class Main extends React.Component {
             .catch((error) => {
               console.error('Error:', error);
             })
+        } else if (event.target.nodeName === 'I') {
+          console.log(event.target.textContent)
+
+          this.navigateTo(event.target.textContent)
         }
     }
 
@@ -74,19 +70,57 @@ class Main extends React.Component {
 
     findVideo(url) {
         url = url.replace("watch?v=", "embed/")
+        console.log("findVideo")
+        // var vid = url.split('v=')[1]
+        // var ampersandPosition = vid.indexOf('&')
+        // if(ampersandPosition !== -1) {
+        //     vid = vid.substring(0, ampersandPosition)
+        // }
         var component = <div className="row video-container">
-                            <iframe title="video"
-                            src={url}
-                            className="video"/>
+                            <ReactPlayer ref={player => {this.player = player}}
+                                        url = {this.props.url}
+                                        onSeek = {this.handleSeek}
+                                        playing
+                                        controls
+                                        width='100%'
+                                        // height='100%'
+                                        // onSeek={(e)=>console.log('onSeek', e)}
+                                        />
                         </div>
         return component
     }
 
+    handleSeek = p => {
+        console.log('handleSeek', this.player.current)
+        this.player.setState({ seeking: true })
+        // this.player.seekTo(parseFloat(e.target.value))
+        // if(this.player.current !== null) {
+        //     console.log('seeking to', p)
+        this.player.seekTo(p)
+        // }
+        setTimeout(()=>this.player.setState({ seeking: false }), 800)
+    }
+
+    navigateTo(ts) {
+        console.log(ts, this.player)
+        if (!this.state.showVideo) {
+            this.setState({showVideo: true})
+        }
+        if (this.player){
+            console.log('HERE', this.player)
+            this.player.props.onSeek(ts)
+            // var total = this.player.current.getDuration()
+            // console.log('total', total)
+            // this.player.seekTo(ts/total, )
+            // this.player.seekTo(ts)
+        }
+
+    }
     render() {
 
+        var component = this.findVideo(this.props.url)
         var btns = ["Low", "Medium", "High"];
         console.log('main', this.props.url)
-        var component = this.findVideo(this.props.url)
         return (
             <div className="container-fluid min-vh-100">
                 <div className="row">
@@ -164,9 +198,7 @@ class Main extends React.Component {
                                 }
                                 <ContentEditable
                                 innerRef={this.ContentEditable}
-
-                                // html={this.props.summary}
-                                html={this.props.wordSpan}
+                                html={this.props.sentSpan}
                                 // disabled={false}
                                 disabled={true}
                                 onChange={this.props.editSummary}/>

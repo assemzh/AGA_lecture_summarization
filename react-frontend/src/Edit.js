@@ -170,7 +170,8 @@ class Edit extends React.Component {
                                   {(this.state.editMode) ?
                                     <ContentEditable
                                     innerRef={this.ContentEditable}
-                                    html={this.props.summary}
+                                    html={this.props.sentSpan}
+                                    // html={this.props.summary}
                                     disabled={false}
                                     onChange={this.props.editSummary}/>
                                     :

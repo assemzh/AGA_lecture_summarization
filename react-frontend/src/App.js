@@ -7,6 +7,7 @@ import { trackPromise } from 'react-promise-tracker';
 import $ from 'jquery'
 
 
+
 class App extends React.Component {
   constructor(props) {
     super(props);
@@ -32,6 +33,7 @@ class App extends React.Component {
     // this.setFullText = this.setFullText.bind(this);
 
     this.getScript = this.getScript.bind(this);
+    // this.checkSent = this.checkSent.bind(this);
   }
 
 
@@ -84,6 +86,8 @@ class App extends React.Component {
   }
 
 
+
+
   createSpanSummary() {
 
     console.log(" Input to summarizer:");
@@ -102,7 +106,11 @@ class App extends React.Component {
       .then(data => {
         console.log(data["result"]);
         var wordSpan = data["result"].split(" ").map((word) => "<span>" + word + "</span>").join(" ");
-        var sentSpan = data["result"].split(".").map((sent) => "<span>" + sent + "</span>").join(".");
+        var sentSpan = data["result"].split(".").map((sent) => sent.split(" ").map((word) => "<span>" + word + "</span>").join(" ") + "." + " [" +
+        "<i>" +
+        this.state.timestamps[this.state.fullText.findIndex(element => sent.includes(element))] +
+        "</i>" + "] ").join("");
+
         this.setState({wordSpan: wordSpan});
         this.setState({sentSpan: sentSpan});
         this.setState({summary: data["result"]});
@@ -115,11 +123,11 @@ class App extends React.Component {
 
 
   editSummary(event) {
-    this.setState({summary: event.target.value});
-    var wordSpan = event.target.value.split(" ").map((word) => "<span>" + word + "</span>").join(" ");
-    var sentSpan = event.target.value.split(".").map((sent) => "<span>" + sent + "</span>").join(".");
-    this.setState({wordSpan: wordSpan});
-    this.setState({sentSpan: sentSpan});
+    // this.setState({summary: event.target.value});
+    // var wordSpan = event.target.value.split(" ").map((word) => "<span>" + word + "</span>").join(" ");
+    // var sentSpan = event.target.value.split(".").map((sent) => "<span>" + sent + "</span>").join(".");
+    // this.setState({wordSpan: wordSpan});
+    this.setState({sentSpan: event.target.value});
 
   }
 
@@ -147,7 +155,8 @@ class App extends React.Component {
     if (this.state.page === "input") {
       content = <Input getScript = {this.getScript} setVideo={this.setVideo}/>
     } else if (this.state.page === "main") {
-      content = <Main url = {this.state.url} summary={this.state.summary} fullText = {this.getScript} detail_level={this.state.detail_level}
+      content = <Main url = {this.state.url} summary={this.state.summary} fullText = {this.getScript}
+      detail_level={this.state.detail_level} sentSpan={this.state.sentSpan}
         wordSpan={this.state.wordSpan} setPage={this.setPage} editSummary={this.editSummary}
         setDetail={this.setDetail} createSpanSummary={this.createSpanSummary}/>
     } else if (this.state.page === "edit") {
