@@ -133,10 +133,10 @@ class Edit extends React.Component {
                                     <div style={{display: "inline-block"}}>
                                         <h4>Original Text</h4>
                                     </div>
-                                    <div style={{display: "inline-block", float: "right"}}>
+                                    {/* <div style={{display: "inline-block", float: "right"}}>
                                         <button type="button" className="btn btn-warning"
                                          onClick={() => this.props.createSpanSummary()}>Summarize</button>
-                                    </div>
+                                    </div> */}
                                 </div>
                                 <div className="summary min-vh-100">
                                     <ContentEditable
