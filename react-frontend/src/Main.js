@@ -17,47 +17,84 @@ class Main extends React.Component {
             wikiDefinition:null,
             wikiLink:null,
             showVideo: false,
+            pressCount: 0
         }
 
         this.ContentEditable = React.createRef();
         this.hoverSpan = this.hoverSpan.bind(this);
+        this.moveVideo = this.moveVideo.bind(this);
+        this.setTimer = this.setTimer.bind(this);
+        this.handleImagePress = this.handleImagePress.bind(this);
         // this.findVideo = this.findVideo.bind(this);
+    }
+
+    handleImagePress(event) {
+    const DOUBLECLICK_TIMEOUT = 300;
+    this.setState({ pressCount: this.state.pressCount+1 });
+
+        setTimeout(() => {
+            if (this.state.pressCount === 0) { return }
+
+            if (this.state.pressCount === 1) {
+            this.moveVideo(event);
+            } else if (this.state.pressCount === 2) {
+            this.hoverSpan(event);
+            }
+
+            this.setState({ pressCount: 0 });
+        }, DOUBLECLICK_TIMEOUT);
+
+    }
+
+    setTimer() {
+        console.log("setTimer");
+        this.setState({hoverTimer: new Date()});
     }
 
     // IT CAN GET THE TEXT INSIDE THE SPAN, SO PUT EVERY WORD INSIDE A SPAN
     hoverSpan(event) {
         if (event.target.nodeName === "SPAN") {
-            console.log(" Input to wiki:");
-            console.log({selectedWord: event.target.textContent});
+            // var timestamp = event.target.className;
+            // this.navigateTo(timestamp);
+
+            // console.log(" Input to wiki:");
+            // console.log({selectedWord: event.target.textContent});
             const data = {selectedWord: event.target.textContent};
 
             fetch('/flask-backend/wiki', {
-              method: 'POST', // or 'PUT'
-              headers: {
+                method: 'POST', // or 'PUT'
+                headers: {
                 'Content-Type': 'application/json',
-              },
-              body: JSON.stringify(data),
+                },
+                body: JSON.stringify(data),
             })
             .then(response => response.json())
             .then(data => {
-              console.log(data["url"]);
-              this.setState({selectedWord: data["keyword"]})
-              this.setState({wikiDefinition: data["result"]})
-              this.setState({wikiLink: data["url"]})
+                console.log(data["url"]);
+                this.setState({selectedWord: data["keyword"]})
+                this.setState({wikiDefinition: data["result"]})
+                this.setState({wikiLink: data["url"]})
             })
             .catch((error) => {
-              console.error('Error:', error);
+                console.error('Error:', error);
             })
-        } else if (event.target.nodeName === 'I') {
-          console.log(event.target.textContent)
+        } 
+    }
 
-          this.navigateTo(event.target.textContent)
+    moveVideo(event) {
+        if (event.target.nodeName === "SPAN") {
+            var timestamp = event.target.className;
+            if (timestamp !== null) {
+                this.navigateTo(timestamp);
+            }
         }
     }
 
     componentDidMount() {
         console.log(this.ContentEditable.current);
-        this.ContentEditable.current.addEventListener("dblclick", this.hoverSpan);
+        this.ContentEditable.current.addEventListener("click", this.handleImagePress);
+        // this.ContentEditable.current.addEventListener("dblclick", this.hoverSpan);
+        // this.ContentEditable.current.addEventListener("mouseover", this.hoverSpan);
     }
 
     handleClick(name) {
@@ -83,7 +120,7 @@ class Main extends React.Component {
                                         playing
                                         controls
                                         width='100%'
-                                        // height='100%'
+                                        height='100%'
                                         // onSeek={(e)=>console.log('onSeek', e)}
                                         />
                         </div>
@@ -117,7 +154,6 @@ class Main extends React.Component {
 
     }
     render() {
-
         var component = this.findVideo(this.props.url)
         var btns = ["Low", "Medium", "High"];
         console.log('main', this.props.url)
@@ -200,7 +236,7 @@ class Main extends React.Component {
                                 innerRef={this.ContentEditable}
 
                                 // html={this.props.summary}
-                                html={(this.props.sentSpan === null) ? "" : this.props.sentSpan}
+                                html={(this.props.sentSpan === undefined) ? "Summarizing..." : this.props.sentSpan}
                                 // disabled={false}
                                 disabled={true}
                                 onChange={this.props.editSummary}/>

@@ -105,11 +105,9 @@ class App extends React.Component {
       .then(data => {
         console.log(data["result"]);
         var wordSpan = data["result"].split(" ").map((word) => "<span>" + word + "</span>").join(" ");
-        var sentSpan = data["result"].split(".").map((sent) => sent.split(" ").map((word) => "<span>" + word + "</span>").join(" ") + "." + " [" +
-        "<i>" +
-        this.state.timestamps[this.state.fullText.findIndex(element => sent.includes(element))] +
-        "</i>" + "] ").join("");
-
+        var sentSpan = data["result"].split(".").map((sent) => 
+        sent.split(" ").map((word) => "<span class=" + 
+        this.state.timestamps[this.state.fullText.findIndex(element => sent.includes(element))] + ">" + word + "</span>").join(" ") + ".").join("");
         this.setState({wordSpan: wordSpan});
         this.setState({sentSpan: sentSpan});
         this.setState({summary: data["result"]});

@@ -31,7 +31,7 @@ class Edit extends React.Component {
                             <ReactPlayer ref={player => {this.player = player}}
                                         url = {this.props.url}
                                         onSeek = {this.handleSeek}
-                                        playing
+                                        // playing
                                         controls
                                         width='100%'
                                         // height='100%'
