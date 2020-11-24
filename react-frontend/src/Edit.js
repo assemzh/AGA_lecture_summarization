@@ -16,7 +16,22 @@ class Edit extends React.Component {
             editMode: false,
         }
 
+        this.myRef = [];
         // this.handleSeek = this.handleSeek.bind(this.player);
+    }
+
+
+
+    handleOnClick = (event) => {
+      //.current is verification that your element has rendered
+      console.log(event.target.className);
+      if (event.target.className !== "undefined" && event.target.className in this.myRef){
+        this.myRef[event.target.className].scrollIntoView({behavior: 'smooth', block: 'nearest', inline: 'start' });
+        this.myRef[event.target.className].style.backgroundColor = 'LightPink'
+        setTimeout(() => {
+        this.myRef[event.target.className].style.backgroundColor = ''
+      }, 1000);
+      }
     }
 
     findVideo(url) {
@@ -145,7 +160,9 @@ class Edit extends React.Component {
                                     disabled={true}
                                     onChange={this.props.editFullText}/>
                                   {this.props.fullText.map( (x, i) => (
-                                        <span style={{color:'blue',cursor:'pointer'}} className="text_i"
+                                        <span style={{cursor:'pointer'}}
+                                          className={this.props.timestamps[i]}
+                                          ref={(ref) => { this.myRef[this.props.timestamps[i]] = ref }}
                                           key = {this.props.timestamps[i]}
                                           onClick = {() => {this.navigateTo(this.props.timestamps[i])}}
                                         >{x  + " "}</span>
@@ -176,9 +193,10 @@ class Edit extends React.Component {
                                     onChange={this.props.editSummary}/>
                                     :
                                     <ContentEditable
-                                    innerRef={this.ContentEditable}
+                                    innerRef={(this.props.sentSpan === undefined) ? "Summarizing..." : this.props.sentSpan}
                                     html={this.props.sentSpan}
                                     disabled={true}
+                                    onClick={this.handleOnClick}
                                     />
                                   }
 

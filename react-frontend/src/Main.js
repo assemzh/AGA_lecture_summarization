@@ -1,7 +1,6 @@
 import React from 'react';
 import './App.css';
 import ContentEditable from 'react-contenteditable';
-import $ from 'jquery'
 import ReactPlayer from 'react-player'
 
 
@@ -57,7 +56,7 @@ class Main extends React.Component {
             // var timestamp = event.target.className;
             // this.navigateTo(timestamp);
 
-            // console.log(" Input to wiki:");
+            console.log(" Input to wiki:");
             // console.log({selectedWord: event.target.textContent});
             const data = {selectedWord: event.target.textContent};
 
@@ -70,7 +69,7 @@ class Main extends React.Component {
             })
             .then(response => response.json())
             .then(data => {
-                console.log(data["url"]);
+                // console.log(data["url"]);
                 this.setState({selectedWord: data["keyword"]})
                 this.setState({wikiDefinition: data["result"]})
                 this.setState({wikiLink: data["url"]})
@@ -78,27 +77,30 @@ class Main extends React.Component {
             .catch((error) => {
                 console.error('Error:', error);
             })
-        } 
+        }
     }
 
     moveVideo(event) {
         if (event.target.nodeName === "SPAN") {
             var timestamp = event.target.className;
-            if (timestamp !== null) {
-                this.navigateTo(timestamp);
+            if (timestamp !== "undefined") {
+              console.log(timestamp)
+              this.navigateTo(timestamp);
+            }else{
+              console.log("Null timestamp")
             }
         }
     }
 
     componentDidMount() {
-        console.log(this.ContentEditable.current);
+        // console.log(this.ContentEditable.current);
         this.ContentEditable.current.addEventListener("click", this.handleImagePress);
         // this.ContentEditable.current.addEventListener("dblclick", this.hoverSpan);
         // this.ContentEditable.current.addEventListener("mouseover", this.hoverSpan);
     }
 
     handleClick(name) {
-      console.log(name);
+      // console.log(name);
       this.setState({detail: name});
       this.props.setDetail(name);
 
@@ -107,7 +109,7 @@ class Main extends React.Component {
 
     findVideo(url) {
         url = url.replace("watch?v=", "embed/")
-        console.log("findVideo")
+        // console.log("findVideo")
         // var vid = url.split('v=')[1]
         // var ampersandPosition = vid.indexOf('&')
         // if(ampersandPosition !== -1) {
@@ -128,7 +130,7 @@ class Main extends React.Component {
     }
 
     handleSeek = p => {
-        console.log('handleSeek', this.player.current)
+        // console.log('handleSeek', this.player.current)
         this.player.setState({ seeking: true })
         // this.player.seekTo(parseFloat(e.target.value))
         // if(this.player.current !== null) {
@@ -139,12 +141,12 @@ class Main extends React.Component {
     }
 
     navigateTo(ts) {
-        console.log(ts, this.player)
+        // console.log(ts, this.player)
         if (!this.state.showVideo) {
             this.setState({showVideo: true})
         }
         if (this.player){
-            console.log('HERE', this.player)
+            // console.log('HERE', this.player)
             this.player.props.onSeek(ts)
             // var total = this.player.current.getDuration()
             // console.log('total', total)
@@ -156,7 +158,7 @@ class Main extends React.Component {
     render() {
         var component = this.findVideo(this.props.url)
         var btns = ["Low", "Medium", "High"];
-        console.log('main', this.props.url)
+        // console.log('main', this.props.url)
         return (
             <div className="container-fluid min-vh-100">
                 <div className="row">
