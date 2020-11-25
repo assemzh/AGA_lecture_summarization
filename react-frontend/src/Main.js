@@ -24,7 +24,25 @@ class Main extends React.Component {
         this.moveVideo = this.moveVideo.bind(this);
         this.setTimer = this.setTimer.bind(this);
         this.handleImagePress = this.handleImagePress.bind(this);
+        this.exportHTML = this.exportHTML.bind(this);
         // this.findVideo = this.findVideo.bind(this);
+    }
+
+    exportHTML(){
+       var header = "<html xmlns:o='urn:schemas-microsoft-com:office:office' "+
+            "xmlns:w='urn:schemas-microsoft-com:office:word' "+
+            "xmlns='http://www.w3.org/TR/REC-html40'>"+
+            "<head><meta charset='utf-8'><title>Export HTML to Word Document with JavaScript</title></head><body>";
+       var footer = "</body></html>";
+       var sourceHTML = header+document.getElementById("source-html").innerHTML+footer;
+
+       var source = 'data:application/vnd.ms-word;charset=utf-8,' + encodeURIComponent(sourceHTML);
+       var fileDownload = document.createElement("a");
+       document.body.appendChild(fileDownload);
+       fileDownload.href = source;
+       fileDownload.download = 'YTsummary.docx';
+       fileDownload.click();
+       document.body.removeChild(fileDownload);
     }
 
     handleImagePress(event) {
@@ -215,6 +233,8 @@ class Main extends React.Component {
                     <div className="col-6 text-col">
                         <div className="container">
                             <div className="summary-header">
+
+                            <button type="button" className="btn btn-success mr-1" id="btn-export" onClick={() => this.exportHTML()}>Export</button>
                                 <button type="button" className="btn btn-danger"
                                 onClick={() => this.props.setPage("edit")}>Show Original Text</button>
                             </div>
@@ -236,7 +256,7 @@ class Main extends React.Component {
                                 }
                                 <ContentEditable
                                 innerRef={this.ContentEditable}
-
+                                id = 'source-html'
                                 // html={this.props.summary}
                                 html={(this.props.sentSpan === undefined) ? "Summarizing..." : this.props.sentSpan}
                                 // disabled={false}
