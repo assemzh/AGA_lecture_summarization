@@ -88,25 +88,6 @@ class Edit extends React.Component {
         // console.log('edit', this.props.url)
         // var txt = this.getScript(this.props.url)
         var component = this.findVideo(this.props.url)
-        // const data = {url: this.props.url};
-        // fetch('/flask-backend/get-script', {
-        //     method: 'POST', // or 'PUT'
-        //     headers: {
-        //         'Content-Type': 'application/json',
-        //     },
-        //     body: JSON.stringify(data),
-        //     })
-        //     .then(response =>
-        //     {   console.log(response)
-        //         response.json()})
-        //     .then(data => {
-        //     console.log(data);
-        //     this.setState({script: data["text"]})
-        //     }).catch((error) => {
-        //     console.error('Error:', error);
-        // })
-
-
 
         return (
             <div className="container-fluid min-vh-100">

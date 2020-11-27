@@ -40,39 +40,58 @@ class App extends React.Component {
 
 
   getScript(vid) {
-      var txt = []
-      var timestamps = []
-      // this.setState({vid: vid})
-      var xml_url = "https://video.google.com/timedtext?lang=en&v=" + vid
-      $.ajax({
-      type: "POST",
-      url: xml_url
-      }).done( (response) => {
-          console.log(response);
-          var xml = response.getElementsByTagName('text')
-          // console.log(xml[0].getAttribute('start'))
-          var len = xml.length
-          for (var i = 0; i < len; i++) {
-              var texti = xml[i].innerHTML
-              // console.log(texti)
-              while (texti.includes('&amp;#39;')) {
-                  texti = texti.replace('&amp;#39;', "'")
-              }
-              while (texti.includes('&amp;quot;')) {
-                  texti = texti.replace('&amp;quot;', '"')
-              }
-              var timestamp = xml[i].getAttribute('start')
-              txt.push(texti)
-              timestamps.push(timestamp)
-          }
-          this.setState({fullText: txt, timestamps: timestamps})
-          this.createSpanSummary();
+    var newUrl = "http://www.youtube.com/watch?v=" + vid
+    const data = {'url': newUrl};
+    fetch('/flask-backend/get-script', {
+        method: 'POST', // or 'PUT'
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+        })
+        .then(response =>
+        {   console.log(response)
+            response.json()})
+        .then(data => {
+        console.log(data);
+        this.setState({script: data["text"]})
+        })
+        // .catch((error) => {
+        // console.error('Error:', error);
+    // })
+      // var txt = []
+      // var timestamps = []
+      // // this.setState({vid: vid})
+      // var xml_url = "https://video.google.com/timedtext?lang=en&v=" + vid
+      // $.ajax({
+      // type: "POST",
+      // url: xml_url
+      // }).done( (response) => {
+      //     console.log(response);
+      //     var xml = response.getElementsByTagName('text')
+      //     // console.log(xml[0].getAttribute('start'))
+      //     var len = xml.length
+      //     for (var i = 0; i < len; i++) {
+      //         var texti = xml[i].innerHTML
+      //         // console.log(texti)
+      //         while (texti.includes('&amp;#39;')) {
+      //             texti = texti.replace('&amp;#39;', "'")
+      //         }
+      //         while (texti.includes('&amp;quot;')) {
+      //             texti = texti.replace('&amp;quot;', '"')
+      //         }
+      //         var timestamp = xml[i].getAttribute('start')
+      //         txt.push(texti)
+      //         timestamps.push(timestamp)
+      //     }
+      //     this.setState({fullText: txt, timestamps: timestamps})
+      //     this.createSpanSummary();
 
-          // return txt
-      //    console.log(timestamps)
-      }).fail( (response) => {
-          // console.log('here');
-      });
+      //     // return txt
+      // //    console.log(timestamps)
+      // }).fail( (response) => {
+      //     // console.log('here');
+      // });
 
   }
 
