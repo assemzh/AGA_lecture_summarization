@@ -12,10 +12,20 @@ class Input extends React.Component {
 
     handleClick() {
       // console.log(this.state.url);
-      if (this.state.url){
-        this.props.setVideo(this.state.url);
-        this.props.getScript(this.state.url)
+      var url = this.state.url;
+      if (url){
+        var regExp = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#&?]*).*/;
+        var match = url.match(regExp);
+        var vid = (match&&match[7].length==11)? match[7] : false;
+
+        if (vid){
+          this.props.setVideo(this.state.url);
+          this.props.getScript(this.state.url)
+        }else{
+          alert('Please, insert valid URL!');
+        }
       }
+
     }
 
 

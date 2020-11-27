@@ -39,57 +39,46 @@ class App extends React.Component {
   }
 
 
-  getScript(url) {
+  getScript(vid) {
       var txt = []
       var timestamps = []
-
-      var regExp = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#&?]*).*/;
-      var match = url.match(regExp);
-      var vid = (match&&match[7].length==11)? match[7] : false;
       // this.setState({vid: vid})
-      if (!vid) {
-        alert("Please, input valid url!")
-      }else{
-        var xml_url = "https://video.google.com/timedtext?lang=en&v=" + vid
-        $.ajax({
-        type: "POST",
-        url: xml_url
-        }).done( (response) => {
-            console.log(response);
-            var xml = response.getElementsByTagName('text')
-            // console.log(xml[0].getAttribute('start'))
-            var len = xml.length
-            for (var i = 0; i < len; i++) {
-                var texti = xml[i].innerHTML
-                // console.log(texti)
-                while (texti.includes('&amp;#39;')) {
-                    texti = texti.replace('&amp;#39;', "'")
-                }
-                while (texti.includes('&amp;quot;')) {
-                    texti = texti.replace('&amp;quot;', '"')
-                }
-                var timestamp = xml[i].getAttribute('start')
-                txt.push(texti)
-                timestamps.push(timestamp)
-            }
-            this.setState({fullText: txt, timestamps: timestamps})
-            this.createSpanSummary();
+      var xml_url = "https://video.google.com/timedtext?lang=en&v=" + vid
+      $.ajax({
+      type: "POST",
+      url: xml_url
+      }).done( (response) => {
+          console.log(response);
+          var xml = response.getElementsByTagName('text')
+          // console.log(xml[0].getAttribute('start'))
+          var len = xml.length
+          for (var i = 0; i < len; i++) {
+              var texti = xml[i].innerHTML
+              // console.log(texti)
+              while (texti.includes('&amp;#39;')) {
+                  texti = texti.replace('&amp;#39;', "'")
+              }
+              while (texti.includes('&amp;quot;')) {
+                  texti = texti.replace('&amp;quot;', '"')
+              }
+              var timestamp = xml[i].getAttribute('start')
+              txt.push(texti)
+              timestamps.push(timestamp)
+          }
+          this.setState({fullText: txt, timestamps: timestamps})
+          this.createSpanSummary();
 
-            // return txt
-        //    console.log(timestamps)
-        }).fail( (response) => {
-            // console.log('here');
-        });
-      }
+          // return txt
+      //    console.log(timestamps)
+      }).fail( (response) => {
+          // console.log('here');
+      });
+
   }
 
-  setVideo(url) {
+  setVideo(vid) {
     // check if url is valid
     // Support different types of urls
-    var regExp = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#&?]*).*/;
-    var match = url.match(regExp);
-    var vid = (match&&match[7].length==11)? match[7] : false;
-
     var newUrl = "http://www.youtube.com/watch?v=" + vid
     this.setState({url: newUrl, page: "main"});
     const data = this.state.title;
