@@ -11,7 +11,7 @@ class Input extends React.Component {
     }
 
     handleClick() {
-      console.log(this.state.url);
+      // console.log(this.state.url);
       if (this.state.url){
         this.props.setVideo(this.state.url);
         this.props.getScript(this.state.url)

@@ -42,52 +42,54 @@ class App extends React.Component {
   getScript(url) {
       var txt = []
       var timestamps = []
-      var vid = url.split('v=')[1]
-      var ampersandPosition = vid.indexOf('&')
-      if(ampersandPosition !== -1) {
-          vid = vid.substring(0, ampersandPosition)
-      }
-      // this.setState({vid: vid})
-      var xml_url = "https://video.google.com/timedtext?lang=en&v=" + vid
-      $.ajax({
-      type: "POST",
-      url: xml_url
-      }).done( (response) => {
-          // console.log(response);
-          var xml = response.getElementsByTagName('text')
-          // console.log(xml[0].getAttribute('start'))
-          var len = xml.length
-          for (var i = 0; i < len; i++) {
-              var texti = xml[i].innerHTML
-              // console.log(texti)
-              while (texti.includes('&amp;#39;')) {
-                  texti = texti.replace('&amp;#39;', "'")
-              }
-              while (texti.includes('&amp;quot;')) {
-                  texti = texti.replace('&amp;quot;', '"')
-              }
-              var timestamp = xml[i].getAttribute('start')
-              txt.push(texti)
-              timestamps.push(timestamp)
-          }
-          this.setState({fullText: txt, timestamps: timestamps})
-          this.createSpanSummary();
 
-          // return txt
-      //    console.log(timestamps)
-      }).fail( (response) => {
-          // console.log('here');
-      });
+      var regExp = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#&?]*).*/;
+      var match = url.match(regExp);
+      var vid = (match&&match[7].length==11)? match[7] : false;
+      // this.setState({vid: vid})
+      if (!vid) {
+        alert("Please, input valid url!")
+      }else{
+        var xml_url = "https://video.google.com/timedtext?lang=en&v=" + vid
+        $.ajax({
+        type: "POST",
+        url: xml_url
+        }).done( (response) => {
+            console.log(response);
+            var xml = response.getElementsByTagName('text')
+            // console.log(xml[0].getAttribute('start'))
+            var len = xml.length
+            for (var i = 0; i < len; i++) {
+                var texti = xml[i].innerHTML
+                // console.log(texti)
+                while (texti.includes('&amp;#39;')) {
+                    texti = texti.replace('&amp;#39;', "'")
+                }
+                while (texti.includes('&amp;quot;')) {
+                    texti = texti.replace('&amp;quot;', '"')
+                }
+                var timestamp = xml[i].getAttribute('start')
+                txt.push(texti)
+                timestamps.push(timestamp)
+            }
+            this.setState({fullText: txt, timestamps: timestamps})
+            this.createSpanSummary();
+
+            // return txt
+        //    console.log(timestamps)
+        }).fail( (response) => {
+            // console.log('here');
+        });
+      }
   }
 
   setVideo(url) {
     // check if url is valid
-    // get summary, set state
-    var vid = url.split('v=')[1]
-      var ampersandPosition = vid.indexOf('&')
-      if(ampersandPosition !== -1) {
-          vid = vid.substring(0, ampersandPosition)
-      }
+    // Support different types of urls
+    var regExp = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#&?]*).*/;
+    var match = url.match(regExp);
+    var vid = (match&&match[7].length==11)? match[7] : false;
+
     var newUrl = "http://www.youtube.com/watch?v=" + vid
     this.setState({url: newUrl, page: "main"});
     const data = this.state.title;
