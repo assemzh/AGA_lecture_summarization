@@ -81,8 +81,13 @@ class App extends React.Component {
   setVideo(url) {
     // check if url is valid
     // get summary, set state
-    this.setState({url: url, page: "main"});
-
+    var vid = url.split('v=')[1]
+      var ampersandPosition = vid.indexOf('&')
+      if(ampersandPosition !== -1) {
+          vid = vid.substring(0, ampersandPosition)
+      }
+    var newUrl = "http://www.youtube.com/watch?v=" + vid
+    this.setState({url: newUrl, page: "main"});
   }
 
 
