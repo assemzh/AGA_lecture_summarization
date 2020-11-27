@@ -123,7 +123,7 @@ class Edit extends React.Component {
 
                 <div className="row edit-video-info-container">
                     <div className="col-10">
-                        <h4 className="subtitle">Title</h4>
+                        <h4 className="subtitle">this.props.title</h4>
                         Author
                         <br/>
                         # Visualizations

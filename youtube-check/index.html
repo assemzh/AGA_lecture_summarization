@@ -1,0 +1,72 @@
+<!DOCTYPE html> 
+<html> 
+<body> 
+  
+<input type = 'text'> Insert link here </input>
+
+<button id = "click">Click</button>
+
+<iframe id = 'video' height="480" width="500"  
+src="https://www.youtube.com/embed/il_t1WVLNxk"> 
+</iframe> 
+  
+<div id = 'text'>
+
+</div> 
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+<script>
+    var vid;
+    var txt = [];
+    var timestamps = [];
+    $(document).ready(function () {
+
+    function myFunction (x, i) {
+        console.log(x)
+    }
+    document.getElementById('click').onclick =  function changeLink() {
+        var link0 = document.getElementsByTagName("input")[0].value //change
+        console.log(link0)
+        // id = link0.split('v=')[1]
+        vid = link0.split('v=')[1]
+        ampersandPosition = vid.indexOf('&')
+        if(ampersandPosition != -1) {
+            vid = vid.substring(0, ampersandPosition)
+        }
+        // var link = link0.replace('watch?v=', 'embed/')
+        // $('#video').attr('src', link)
+
+        $.ajax({
+        type: "POST",
+        url: "https://video.google.com/timedtext?lang=en&v=5MgBikgcWnY"
+        }).done(function (response) {
+            console.log(response);
+            var text = ""
+            var xml = response.getElementsByTagName('text')
+            // console.log(xml[0].getAttribute('start'))
+            var len = xml.length
+            for (var i = 0; i < len; i++) {
+                var texti = xml[i].innerHTML
+                // console.log(texti)
+                while (texti.includes('&amp;#39;')) {
+                    texti = texti.replace('&amp;#39;', "'")
+                } 
+                while (texti.includes('&amp;quot;')) {
+                    texti = texti.replace('&amp;quot;', '"')
+                }
+                text += texti + ' '
+                txt.push(texti)
+                timestamps.push(xml[i].getAttribute('start'))
+            }
+           console.log(txt)
+           console.log(timestamps)
+        }).fail(function (response) {
+            console.log('here');
+        });
+    }
+
+    
+    })
+</script>
+</body>
+</html> 

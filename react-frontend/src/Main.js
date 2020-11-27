@@ -189,7 +189,7 @@ class Main extends React.Component {
                         {component}
                         <div className="row video-info-container">
                             <div>
-                                <h4 className="subtitle">Title</h4>
+                                <h4 className="subtitle">this.props.title</h4>
                                 Author
                                 <br/>
                                 # Visualizations

@@ -22,6 +22,7 @@ class App extends React.Component {
       detail_level: 0.4, // default is Medium
       timestamps: null,
       wordSpan: null,
+      title: null,
     }
 
 
@@ -89,6 +90,19 @@ class App extends React.Component {
       }
     var newUrl = "http://www.youtube.com/watch?v=" + vid
     this.setState({url: newUrl, page: "main"});
+    const data = this.state.title;
+    fetch('/flask-backend/title', {
+      method: 'POST', // or 'PUT'
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    })
+    .then(response => response.json())
+    .then(data => {
+      console.log('title', data["title"]);
+      this.setState({title: data["title"]});
+    })
   }
 
 
@@ -162,12 +176,12 @@ class App extends React.Component {
     if (this.state.page === "input") {
       content = <Input getScript = {this.getScript} setVideo={this.setVideo}/>
     } else if (this.state.page === "main") {
-      content = <Main url = {this.state.url} summary={this.state.summary} fullText = {this.getScript}
+      content = <Main title = {this.state.title} url = {this.state.url} summary={this.state.summary} fullText = {this.getScript}
       detail_level={this.state.detail_level} sentSpan={this.state.sentSpan}
         wordSpan={this.state.wordSpan} setPage={this.setPage} editSummary={this.editSummary}
         setDetail={this.setDetail} createSpanSummary={this.createSpanSummary}/>
     } else if (this.state.page === "edit") {
-      content = <Edit url = {this.state.url}
+      content = <Edit title = {this.state.title} url = {this.state.url}
       summary={this.state.summary} editSummary={this.editSummary}
       sentSpan={this.state.sentSpan} createSpanSummary={this.createSpanSummary}
       setPage={this.setPage} fullText={this.state.fullText}

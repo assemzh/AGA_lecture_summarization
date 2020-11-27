@@ -10,6 +10,28 @@ from flask import Flask, jsonify, request
 app = Flask(__name__)
 CORS(app)
 
+import urllib.request
+import json
+import urllib
+import pprint
+
+@app.route('/flask-backend/title', methods=['POST'])
+def get_title():
+    data = request.get_json()
+    VideoID = data["vid"]
+
+    params = {"format": "json", "url": "https://www.youtube.com/watch?v=%s" % VideoID}
+    url = "https://www.youtube.com/oembed"
+    query_string = urllib.parse.urlencode(params)
+    url = url + "?" + query_string
+
+    with urllib.request.urlopen(url) as response:
+        response_text = response.read()
+        data = json.loads(response_text.decode())
+        # pprint.pprint(data)
+        print(data['title'])
+    return jsonify({"title":data['title']})
+
 @app.route('/flask-backend/get-script', methods=['POST'])
 def get_script():
     data = request.get_json()
