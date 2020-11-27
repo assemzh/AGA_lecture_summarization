@@ -9,7 +9,7 @@
 html, body {
   height: 100%;
   background-color: #1d2431;
-  overflow: hidden;
+  /* overflow: hidden; */
 }
 
 .vertical-align {

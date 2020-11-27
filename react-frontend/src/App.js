@@ -24,6 +24,7 @@ class App extends React.Component {
       wordSpan: null,
     }
 
+
     this.setVideo = this.setVideo.bind(this);
     this.setPage = this.setPage.bind(this);
     this.editSummary = this.editSummary.bind(this);
@@ -51,7 +52,7 @@ class App extends React.Component {
       type: "POST",
       url: xml_url
       }).done( (response) => {
-          console.log(response);
+          // console.log(response);
           var xml = response.getElementsByTagName('text')
           // console.log(xml[0].getAttribute('start'))
           var len = xml.length
@@ -74,7 +75,7 @@ class App extends React.Component {
           // return txt
       //    console.log(timestamps)
       }).fail( (response) => {
-          console.log('here');
+          // console.log('here');
       });
   }
 
@@ -95,7 +96,7 @@ class App extends React.Component {
 
   createSpanSummary() {
     console.log(" Input to summarizer:");
-    console.log(this.state);
+    // console.log(this.state);
     const data = this.state;
 
     trackPromise(
@@ -108,14 +109,13 @@ class App extends React.Component {
       })
       .then(response => response.json())
       .then(data => {
-        console.log(data["result"]);
-        var wordSpan = data["result"].split(" ").map((word) => "<span>" + word + "</span>").join(" ");
-        var sentSpan = data["result"].split(".").map((sent) => sent.split(" ").map((word) => "<span>" + word + "</span>").join(" ") + "." + " [" +
-        "<i>" +
-        this.state.timestamps[this.state.fullText.findIndex(element => sent.includes(element))] +
-        "</i>" + "] ").join("");
-
-        this.setState({wordSpan: wordSpan});
+        // console.log(data["result"]);
+        // var wordSpan = data["result"].split(" ").map((word) => "<span>" + word + "</span>").join(" ");
+        var sentSpan = data["result"].split(".").map((sent) =>
+        sent.split(" ").map((word) => "<span style='cursor:pointer' class=" +
+        this.state.timestamps[this.state.fullText.findIndex(element => (sent.includes(element)))] +
+        ">" + word + "</span>").join(" ") + ".").join("");
+        // this.setState({wordSpan: wordSpan});
         this.setState({sentSpan: sentSpan});
         this.setState({summary: data["result"]});
       })

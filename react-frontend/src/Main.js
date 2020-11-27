@@ -1,7 +1,6 @@
 import React from 'react';
 import './App.css';
 import ContentEditable from 'react-contenteditable';
-import $ from 'jquery'
 import ReactPlayer from 'react-player'
 
 
@@ -17,51 +16,109 @@ class Main extends React.Component {
             wikiDefinition:null,
             wikiLink:null,
             showVideo: false,
+            pressCount: 0
         }
 
         this.ContentEditable = React.createRef();
         this.hoverSpan = this.hoverSpan.bind(this);
+        this.moveVideo = this.moveVideo.bind(this);
+        this.setTimer = this.setTimer.bind(this);
+        this.handleImagePress = this.handleImagePress.bind(this);
+        this.exportHTML = this.exportHTML.bind(this);
         // this.findVideo = this.findVideo.bind(this);
+    }
+
+    exportHTML(){
+       var header = "<html xmlns:o='urn:schemas-microsoft-com:office:office' "+
+            "xmlns:w='urn:schemas-microsoft-com:office:word' "+
+            "xmlns='http://www.w3.org/TR/REC-html40'>"+
+            "<head><meta charset='utf-8'><title>Export HTML to Word Document with JavaScript</title></head><body>";
+       var footer = "</body></html>";
+       var sourceHTML = header+document.getElementById("source-html").innerHTML+footer;
+
+       var source = 'data:application/vnd.ms-word;charset=utf-8,' + encodeURIComponent(sourceHTML);
+       var fileDownload = document.createElement("a");
+       document.body.appendChild(fileDownload);
+       fileDownload.href = source;
+       fileDownload.download = 'YTsummary.docx';
+       fileDownload.click();
+       document.body.removeChild(fileDownload);
+    }
+
+    handleImagePress(event) {
+    const DOUBLECLICK_TIMEOUT = 300;
+    this.setState({ pressCount: this.state.pressCount+1 });
+
+        setTimeout(() => {
+            if (this.state.pressCount === 0) { return }
+
+            if (this.state.pressCount === 1) {
+            this.moveVideo(event);
+            } else if (this.state.pressCount === 2) {
+            this.hoverSpan(event);
+            }
+
+            this.setState({ pressCount: 0 });
+        }, DOUBLECLICK_TIMEOUT);
+
+    }
+
+    setTimer() {
+        console.log("setTimer");
+        this.setState({hoverTimer: new Date()});
     }
 
     // IT CAN GET THE TEXT INSIDE THE SPAN, SO PUT EVERY WORD INSIDE A SPAN
     hoverSpan(event) {
         if (event.target.nodeName === "SPAN") {
+            // var timestamp = event.target.className;
+            // this.navigateTo(timestamp);
+
             console.log(" Input to wiki:");
-            console.log({selectedWord: event.target.textContent});
+            // console.log({selectedWord: event.target.textContent});
             const data = {selectedWord: event.target.textContent};
 
             fetch('/flask-backend/wiki', {
-              method: 'POST', // or 'PUT'
-              headers: {
+                method: 'POST', // or 'PUT'
+                headers: {
                 'Content-Type': 'application/json',
-              },
-              body: JSON.stringify(data),
+                },
+                body: JSON.stringify(data),
             })
             .then(response => response.json())
             .then(data => {
-              console.log(data["url"]);
-              this.setState({selectedWord: data["keyword"]})
-              this.setState({wikiDefinition: data["result"]})
-              this.setState({wikiLink: data["url"]})
+                // console.log(data["url"]);
+                this.setState({selectedWord: data["keyword"]})
+                this.setState({wikiDefinition: data["result"]})
+                this.setState({wikiLink: data["url"]})
             })
             .catch((error) => {
-              console.error('Error:', error);
+                console.error('Error:', error);
             })
-        } else if (event.target.nodeName === 'I') {
-          console.log(event.target.textContent)
+        }
+    }
 
-          this.navigateTo(event.target.textContent)
+    moveVideo(event) {
+        if (event.target.nodeName === "SPAN") {
+            var timestamp = event.target.className;
+            if (timestamp !== "undefined") {
+              console.log(timestamp)
+              this.navigateTo(timestamp);
+            }else{
+              console.log("Null timestamp")
+            }
         }
     }
 
     componentDidMount() {
-        console.log(this.ContentEditable.current);
-        this.ContentEditable.current.addEventListener("dblclick", this.hoverSpan);
+        // console.log(this.ContentEditable.current);
+        this.ContentEditable.current.addEventListener("click", this.handleImagePress);
+        // this.ContentEditable.current.addEventListener("dblclick", this.hoverSpan);
+        // this.ContentEditable.current.addEventListener("mouseover", this.hoverSpan);
     }
 
     handleClick(name) {
-      console.log(name);
+      // console.log(name);
       this.setState({detail: name});
       this.props.setDetail(name);
 
@@ -70,7 +127,7 @@ class Main extends React.Component {
 
     findVideo(url) {
         url = url.replace("watch?v=", "embed/")
-        console.log("findVideo")
+        // console.log("findVideo")
         // var vid = url.split('v=')[1]
         // var ampersandPosition = vid.indexOf('&')
         // if(ampersandPosition !== -1) {
@@ -83,7 +140,7 @@ class Main extends React.Component {
                                         playing
                                         controls
                                         width='100%'
-                                        // height='100%'
+                                        height='100%'
                                         // onSeek={(e)=>console.log('onSeek', e)}
                                         />
                         </div>
@@ -91,7 +148,7 @@ class Main extends React.Component {
     }
 
     handleSeek = p => {
-        console.log('handleSeek', this.player.current)
+        // console.log('handleSeek', this.player.current)
         this.player.setState({ seeking: true })
         // this.player.seekTo(parseFloat(e.target.value))
         // if(this.player.current !== null) {
@@ -102,12 +159,12 @@ class Main extends React.Component {
     }
 
     navigateTo(ts) {
-        console.log(ts, this.player)
+        // console.log(ts, this.player)
         if (!this.state.showVideo) {
             this.setState({showVideo: true})
         }
         if (this.player){
-            console.log('HERE', this.player)
+            // console.log('HERE', this.player)
             this.player.props.onSeek(ts)
             // var total = this.player.current.getDuration()
             // console.log('total', total)
@@ -117,10 +174,9 @@ class Main extends React.Component {
 
     }
     render() {
-
         var component = this.findVideo(this.props.url)
         var btns = ["Low", "Medium", "High"];
-        console.log('main', this.props.url)
+        // console.log('main', this.props.url)
         return (
             <div className="container-fluid min-vh-100">
                 <div className="row">
@@ -177,6 +233,8 @@ class Main extends React.Component {
                     <div className="col-6 text-col">
                         <div className="container">
                             <div className="summary-header">
+
+                            <button type="button" className="btn btn-success mr-1" id="btn-export" onClick={() => this.exportHTML()}>Export</button>
                                 <button type="button" className="btn btn-danger"
                                 onClick={() => this.props.setPage("edit")}>Show Original Text</button>
                             </div>
@@ -198,9 +256,9 @@ class Main extends React.Component {
                                 }
                                 <ContentEditable
                                 innerRef={this.ContentEditable}
-
+                                id = 'source-html'
                                 // html={this.props.summary}
-                                html={(this.props.sentSpan === null) ? "" : this.props.sentSpan}
+                                html={(this.props.sentSpan === undefined) ? "Summarizing..." : this.props.sentSpan}
                                 // disabled={false}
                                 disabled={true}
                                 onChange={this.props.editSummary}/>
