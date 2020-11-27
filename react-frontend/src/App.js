@@ -40,6 +40,7 @@ class App extends React.Component {
 
 
   getScript(vid) {
+    var txt = []
     var newUrl = "http://www.youtube.com/watch?v=" + vid
     const data = {'url': newUrl};
     fetch('/flask-backend/get-script', {
@@ -54,8 +55,23 @@ class App extends React.Component {
             response.json()})
         .then(data => {
         console.log(data);
-        this.setState({script: data["text"]})
+        var script = data["text"]
+        this.setState({timestamps: data["timestamps"]})
+        var len = script.length
+        for (var i = 0; i<len; i++) {
+          var texti = script[i]
+          // console.log(texti)
+          while (texti.includes('&amp;#39;')) {
+              texti = texti.replace('&amp;#39;', "'")
+          }
+          while (texti.includes('&amp;quot;')) {
+              texti = texti.replace('&amp;quot;', '"')
+          }
+          txt.push(texti)
+        }
+        this.setState({fullText: txt})
         })
+        this.createSpanSummary();
         // .catch((error) => {
         // console.error('Error:', error);
     // })

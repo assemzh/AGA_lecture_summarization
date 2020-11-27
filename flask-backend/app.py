@@ -62,11 +62,12 @@ def get_script():
         vid = vid[:ampersandPosition]
     textlist = YouTubeTranscriptApi.get_transcript(vid)
     print(textlist, file=sys.stderr)
-    text = ""
+    text = []
+    timestamps = []
     for t in textlist:
-        text += t['text']
-        break
-    return jsonify({"text":text, "vid": vid})
+        text.append(t['text'])
+        timestamps.append(t['start'])
+    return jsonify({"text":text, "vid": vid, "timestamps": timestamps})
 
 @app.route('/flask-backend/summary', methods=['POST'])
 def summarize():
