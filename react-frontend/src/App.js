@@ -50,9 +50,7 @@ class App extends React.Component {
         },
         body: JSON.stringify(data),
         })
-        .then(response =>
-        {   console.log(response)
-            response.json()})
+        .then(response => response.json())
         .then(data => {
         console.log(data);
         var script = data["text"]
