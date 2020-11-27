@@ -189,10 +189,8 @@ class Main extends React.Component {
                         {component}
                         <div className="row video-info-container">
                             <div>
-                                <h4 className="subtitle">this.props.title</h4>
-                                Author
+                                <h5 className="subtitle"> {this.props.title }</h5>
                                 <br/>
-                                # Visualizations
                             </div>
 
                         </div>
@@ -200,7 +198,7 @@ class Main extends React.Component {
                         <div className="row complexity-info-container">
                             <div className="row">
                             <div className="col-7">
-                                <h2 className="subtitle">Level of Detail</h2>
+                                <h4 className="subtitle">Level of Detail</h4>
                                 How summarized you want your lecture to be
                             </div>
                             <div className="col-4">

@@ -19,7 +19,7 @@ import pprint
 def index():
     try:
         raise Exception("Exception")
-    except Exception,e:
+    except Exception:
         track= get_current_traceback(skip=1, show_hidden_frames=True,
             ignore_system_exceptions=False)
         track.log()
@@ -49,7 +49,7 @@ def get_title():
         response_text = response.read()
         data = json.loads(response_text.decode())
         # pprint.pprint(data)
-        print(data['title'])
+        # print(data['title'])
     return jsonify({"title":data['title']})
 
 @app.route('/flask-backend/get-script', methods=['POST'])

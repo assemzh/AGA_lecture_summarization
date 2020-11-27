@@ -19,8 +19,8 @@ class Input extends React.Component {
         var vid = (match&&match[7].length==11)? match[7] : false;
 
         if (vid){
-          this.props.setVideo(this.state.url);
-          this.props.getScript(this.state.url)
+          this.props.setVideo(vid);
+          this.props.getScript(vid)
         }else{
           alert('Please, insert valid URL!');
         }

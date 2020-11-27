@@ -81,7 +81,7 @@ class App extends React.Component {
     // Support different types of urls
     var newUrl = "http://www.youtube.com/watch?v=" + vid
     this.setState({url: newUrl, page: "main"});
-    const data = this.state.title;
+    const data = {'vid': vid}
     fetch('/flask-backend/title', {
       method: 'POST', // or 'PUT'
       headers: {
@@ -91,7 +91,7 @@ class App extends React.Component {
     })
     .then(response => response.json())
     .then(data => {
-      console.log('title', data["title"]);
+      // console.log('title', data["title"]);
       this.setState({title: data["title"]});
     })
   }
