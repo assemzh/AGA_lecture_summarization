@@ -5,6 +5,7 @@ import Main from './Main.js';
 import Edit from './Edit.js';
 import { trackPromise } from 'react-promise-tracker';
 import $ from 'jquery'
+import axios from 'axios';
 
 
 
@@ -43,14 +44,15 @@ class App extends React.Component {
     var txt = []
     var newUrl = "http://www.youtube.com/watch?v=" + vid
     const data = {'url': newUrl};
-    fetch('/flask-backend/get-script', {
-        method: 'POST', // or 'PUT'
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data),
-        })
-        .then(response => response.json())
+    axios.post('http://localhost:5000/flask-backend/get-script', data)
+    // fetch('/flask-backend/get-script', {
+    //     method: 'POST', // or 'PUT'
+    //     headers: {
+    //         'Content-Type': 'application/json',
+    //     },
+    //     body: JSON.stringify(data),
+    //     })
+        .then(response => response["data"])
         .then(data => {
         console.log(data);
         var script = data["text"]
@@ -80,14 +82,15 @@ class App extends React.Component {
     var newUrl = "http://www.youtube.com/watch?v=" + vid
     this.setState({url: newUrl, page: "main"});
     const data = {'vid': vid}
-    fetch('/flask-backend/title', {
-      method: 'POST', // or 'PUT'
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(data),
-    })
-    .then(response => response.json())
+    axios.post('http://localhost:5000/flask-backend/title', data)
+    // fetch('/flask-backend/title', {
+    //   method: 'POST', // or 'PUT'
+    //   headers: {
+    //     'Content-Type': 'application/json',
+    //   },
+    //   body: JSON.stringify(data),
+    // })
+    .then(response => response["data"])
     .then(data => {
       // console.log('title', data["title"]);
       this.setState({title: data["title"]});
@@ -103,14 +106,15 @@ class App extends React.Component {
     const data = this.state;
 
     trackPromise(
-      fetch('/flask-backend/summary', {
-        method: 'POST', // or 'PUT'
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data),
-      })
-      .then(response => response.json())
+      axios.post('http://localhost:5000/flask-backend/summary', data)
+      // fetch('/flask-backend/summary', {
+      //   method: 'POST', // or 'PUT'
+      //   headers: {
+      //     'Content-Type': 'application/json',
+      //   },
+      //   body: JSON.stringify(data),
+      // })
+      .then(response => response["data"])
       .then(data => {
         // console.log(data["result"]);
         // var wordSpan = data["result"].split(" ").map((word) => "<span>" + word + "</span>").join(" ");

@@ -2,6 +2,7 @@ import React from 'react';
 import './App.css';
 import ContentEditable from 'react-contenteditable';
 import ReactPlayer from 'react-player'
+import axios from 'axios';
 
 
 
@@ -77,15 +78,15 @@ class Main extends React.Component {
             console.log(" Input to wiki:");
             // console.log({selectedWord: event.target.textContent});
             const data = {selectedWord: event.target.textContent};
-
-            fetch('/flask-backend/wiki', {
-                method: 'POST', // or 'PUT'
-                headers: {
-                'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(data),
-            })
-            .then(response => response.json())
+            axios.post('http://localhost:5000/flask-backend/wiki', data)
+            // fetch('/flask-backend/wiki', {
+            //     method: 'POST', // or 'PUT'
+            //     headers: {
+            //     'Content-Type': 'application/json',
+            //     },
+            //     body: JSON.stringify(data),
+            // })
+            .then(response => response['data'])
             .then(data => {
                 // console.log(data["url"]);
                 this.setState({selectedWord: data["keyword"]})

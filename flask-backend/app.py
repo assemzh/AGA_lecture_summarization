@@ -15,16 +15,6 @@ import json
 import urllib
 import pprint
 
-@app.route('/')
-def index():
-    try:
-        raise Exception("Exception")
-    except Exception:
-        track= get_current_traceback(skip=1, show_hidden_frames=True,
-            ignore_system_exceptions=False)
-        track.log()
-        abort(500)
-    return jsonify("result":"hello there!")
 
 @app.errorhandler(500)
 def internal_error(error):
@@ -49,6 +39,7 @@ def get_title():
         response_text = response.read()
         data = json.loads(response_text.decode())
         # pprint.pprint(data)
+        # print("You are in Title")
         # print(data['title'])
     return jsonify({"title":data['title']})
 
@@ -67,6 +58,8 @@ def get_script():
     for t in textlist:
         text.append(t['text'])
         timestamps.append(t['start'])
+    # print("You are in Text")
+    # print(vid)
     return jsonify({"text":text, "vid": vid, "timestamps": timestamps})
 
 @app.route('/flask-backend/summary', methods=['POST'])
@@ -76,6 +69,8 @@ def summarize():
     model = Summarizer()
     result = model(body, ratio=data['detail_level'])  # Specified with ratio
     # print(result)
+    # print("You are in Summary")
+    # print(result[:10])
     return jsonify({"result":result})
 
 
@@ -93,7 +88,9 @@ def find_wiki():
 
 
 
+@app.route('/', methods=['GET'])
+def hello():
+    return jsonify({"response":"This is Sentiment Application"})
+
 if __name__ == '__main__':
-    # app.run(host="localhost", threaded=True, port=5000)
-    from waitress import serve
-    serve(app, host="localhost", port=5000)
+    app.run(host="0.0.0.0", threaded=True, port=5000)
