@@ -61,7 +61,7 @@ def get_script():
     if(ampersandPosition != -1):
         vid = vid[:ampersandPosition]
     textlist = YouTubeTranscriptApi.get_transcript(vid)
-    print(textlist, file=sys.stderr)
+    # print(textlist, file=sys.stderr)
     text = []
     timestamps = []
     for t in textlist:
@@ -75,6 +75,7 @@ def summarize():
     body = " ".join(data["fullText"])
     model = Summarizer()
     result = model(body, ratio=data['detail_level'])  # Specified with ratio
+    # print(result)
     return jsonify({"result":result})
 
 
