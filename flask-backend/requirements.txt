@@ -1,14 +1,6 @@
-requests==2.24.0
-
-# testing
-mock==3.0.5
-httpretty==0.9.7
-coverage==5.2.1
-coveralls==1.11.1
-
 flask-cors
 waitress
 youtube_transcript_api
 wikipedia
 bert-extractive-summarizer
-torch
+https://download.pytorch.org/whl/cpu/torch-1.3.1%2Bcpu-cp36-cp36m-linux_x86_64.whl

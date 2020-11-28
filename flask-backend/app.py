@@ -24,7 +24,7 @@ def index():
             ignore_system_exceptions=False)
         track.log()
         abort(500)
-    return "index"
+    return jsonify("result":"hello there!")
 
 @app.errorhandler(500)
 def internal_error(error):
