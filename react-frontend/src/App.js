@@ -68,44 +68,9 @@ class App extends React.Component {
           txt.push(texti)
         }
         this.setState({fullText: txt})
-        })
         this.createSpanSummary();
-        // .catch((error) => {
-        // console.error('Error:', error);
-    // })
-      // var txt = []
-      // var timestamps = []
-      // // this.setState({vid: vid})
-      // var xml_url = "https://video.google.com/timedtext?lang=en&v=" + vid
-      // $.ajax({
-      // type: "POST",
-      // url: xml_url
-      // }).done( (response) => {
-      //     console.log(response);
-      //     var xml = response.getElementsByTagName('text')
-      //     // console.log(xml[0].getAttribute('start'))
-      //     var len = xml.length
-      //     for (var i = 0; i < len; i++) {
-      //         var texti = xml[i].innerHTML
-      //         // console.log(texti)
-      //         while (texti.includes('&amp;#39;')) {
-      //             texti = texti.replace('&amp;#39;', "'")
-      //         }
-      //         while (texti.includes('&amp;quot;')) {
-      //             texti = texti.replace('&amp;quot;', '"')
-      //         }
-      //         var timestamp = xml[i].getAttribute('start')
-      //         txt.push(texti)
-      //         timestamps.push(timestamp)
-      //     }
-      //     this.setState({fullText: txt, timestamps: timestamps})
-      //     this.createSpanSummary();
+        })
 
-      //     // return txt
-      // //    console.log(timestamps)
-      // }).fail( (response) => {
-      //     // console.log('here');
-      // });
 
   }
 

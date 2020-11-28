@@ -181,11 +181,6 @@ class Main extends React.Component {
             <div className="container-fluid min-vh-100">
                 <div className="row">
                     <div className="col-6 video-col">
-                        {/* <div className="row video-container">
-                            <iframe title="video"
-                            src="https://www.youtube.com/embed/tgbNymZ7vqY"
-                            className="video"/>
-                        </div> */}
                         {component}
                         <div className="row video-info-container">
                             <div>
@@ -210,9 +205,6 @@ class Main extends React.Component {
                                             {name}
                                         </button>
                                     ))}
-                                    {/* <button type="button" className="btn btn-light detail-btn">Low</button>
-                                    <button type="button" className="btn btn-light detail-btn">Medium</button>
-                                    <button type="button" className="btn btn-light detail-btn">High</button> */}
                                 </div>
                             </div>
                             </div>
@@ -252,6 +244,10 @@ class Main extends React.Component {
                                 :
                                 <div/>
                                 }
+                                <div class="border-bottom"> <h4 class="d-flex justify-content-center">Summary</h4>
+                                  <i class="d-flex justify-content-center">Click to navigate and double-click to see the definition.</i>
+                                </div>
+                                <div class="container pt-3">
                                 <ContentEditable
                                 innerRef={this.ContentEditable}
                                 id = 'source-html'
@@ -260,7 +256,7 @@ class Main extends React.Component {
                                 // disabled={false}
                                 disabled={true}
                                 onChange={this.props.editSummary}/>
-
+                                </div>
                             </div>
                         </div>
 
