@@ -103,7 +103,7 @@ class App extends React.Component {
   createSpanSummary() {
     console.log(" Input to summarizer:");
     // console.log(this.state);
-    const data = this.state;
+    const data = {'fullText': this.state.fullText, 'detail_level': this.state.detail_level};
 
     trackPromise(
       axios.post('http://localhost:5000/flask-backend/summary', data)
