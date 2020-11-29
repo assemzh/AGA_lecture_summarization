@@ -83,15 +83,15 @@ class App extends React.Component {
 
 
 
-  createSpanSummary() {
+  createSpanSummary(value) {
     console.log(" Input to summarizer:");
 
-    const data = {'fullText': this.state.fullText, 'detail_level': this.state.detail_level};
-    console.log(data);
+    const data = {'fullText': this.state.fullText, 'detail_level': value};
     trackPromise(
       axios.post('https://aga-sum.herokuapp.com/flask-backend/summary', data)
       .then(response => response["data"])
       .then(data => {
+        console.log(data);
         var sentSpan = data["result"].split(".").map((sent) =>
         sent.split(" ").map((word) => "<span style='cursor:pointer' class=" +
         this.state.timestamps[this.state.fullText.findIndex(element => (sent.includes(element)))] +
@@ -119,8 +119,10 @@ class App extends React.Component {
     } else if (value === "Medium") {
       tmp = 0.4;
     }
+
     this.setState({detail_level: tmp});
-    this.createSpanSummary();
+    console.log(tmp)
+    this.createSpanSummary(tmp);
   }
 
   editFullText(event) {

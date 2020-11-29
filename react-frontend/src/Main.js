@@ -120,8 +120,9 @@ class Main extends React.Component {
 
     handleClick(name) {
       // console.log(name);
-      this.setState({detail: name});
       this.props.setDetail(name);
+      this.setState({detail: name});
+
 
 
     }
