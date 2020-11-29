@@ -187,11 +187,11 @@ class Main extends React.Component {
                         <hr/>
                         <div className="row complexity-info-container">
                             <div className="row">
-                            <div className="col-7">
-                                <h4 className="subtitle">Level of Detail</h4>
+                            <div className="col-6">
+                                <h2 className="subtitle">Level of Detail</h2>
                                 How summarized you want your lecture to be
                             </div>
-                            <div className="col-4">
+                            <div className="col-6">
                                 <div className="col-btn">
                                     {btns.map((name, idx) => (
                                         <button type="button" key={"btn" + name}
