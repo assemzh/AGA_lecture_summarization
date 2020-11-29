@@ -5,6 +5,7 @@ import Main from './Main.js';
 import Edit from './Edit.js';
 import { trackPromise } from 'react-promise-tracker';
 import $ from 'jquery'
+import axios from 'axios';
 
 
 
@@ -22,6 +23,7 @@ class App extends React.Component {
       detail_level: 0.4, // default is Medium
       timestamps: null,
       wordSpan: null,
+      title: null,
     }
 
 
@@ -38,52 +40,61 @@ class App extends React.Component {
   }
 
 
-  getScript(url) {
-      var txt = []
-      var timestamps = []
-      var vid = url.split('v=')[1]
-      var ampersandPosition = vid.indexOf('&')
-      if(ampersandPosition !== -1) {
-          vid = vid.substring(0, ampersandPosition)
-      }
-      // this.setState({vid: vid})
-      var xml_url = "https://video.google.com/timedtext?lang=en&v=" + vid
-      $.ajax({
-      type: "POST",
-      url: xml_url
-      }).done( (response) => {
-          // console.log(response);
-          var xml = response.getElementsByTagName('text')
-          // console.log(xml[0].getAttribute('start'))
-          var len = xml.length
-          for (var i = 0; i < len; i++) {
-              var texti = xml[i].innerHTML
-              // console.log(texti)
-              while (texti.includes('&amp;#39;')) {
-                  texti = texti.replace('&amp;#39;', "'")
-              }
-              while (texti.includes('&amp;quot;')) {
-                  texti = texti.replace('&amp;quot;', '"')
-              }
-              var timestamp = xml[i].getAttribute('start')
-              txt.push(texti)
-              timestamps.push(timestamp)
+  getScript(vid) {
+    var txt = []
+    var newUrl = "http://www.youtube.com/watch?v=" + vid
+    const data = {'url': newUrl};
+    axios.post('http://localhost:5000/flask-backend/get-script', data)
+    // fetch('/flask-backend/get-script', {
+    //     method: 'POST', // or 'PUT'
+    //     headers: {
+    //         'Content-Type': 'application/json',
+    //     },
+    //     body: JSON.stringify(data),
+    //     })
+        .then(response => response["data"])
+        .then(data => {
+        console.log(data);
+        var script = data["text"]
+        this.setState({timestamps: data["timestamps"]})
+        var len = script.length
+        for (var i = 0; i<len; i++) {
+          var texti = script[i]
+          // console.log(texti)
+          while (texti.includes('&amp;#39;')) {
+              texti = texti.replace('&amp;#39;', "'")
           }
-          this.setState({fullText: txt, timestamps: timestamps})
-          this.createSpanSummary();
+          while (texti.includes('&amp;quot;')) {
+              texti = texti.replace('&amp;quot;', '"')
+          }
+          txt.push(texti)
+        }
+        this.setState({fullText: txt})
+        this.createSpanSummary();
+        })
 
-          // return txt
-      //    console.log(timestamps)
-      }).fail( (response) => {
-          // console.log('here');
-      });
+
   }
 
-  setVideo(url) {
+  setVideo(vid) {
     // check if url is valid
-    // get summary, set state
-    this.setState({url: url, page: "main"});
-
+    // Support different types of urls
+    var newUrl = "http://www.youtube.com/watch?v=" + vid
+    this.setState({url: newUrl, page: "main"});
+    const data = {'vid': vid}
+    axios.post('http://localhost:5000/flask-backend/title', data)
+    // fetch('/flask-backend/title', {
+    //   method: 'POST', // or 'PUT'
+    //   headers: {
+    //     'Content-Type': 'application/json',
+    //   },
+    //   body: JSON.stringify(data),
+    // })
+    .then(response => response["data"])
+    .then(data => {
+      // console.log('title', data["title"]);
+      this.setState({title: data["title"]});
+    })
   }
 
 
@@ -92,17 +103,18 @@ class App extends React.Component {
   createSpanSummary() {
     console.log(" Input to summarizer:");
     // console.log(this.state);
-    const data = this.state;
+    const data = {'fullText': this.state.fullText, 'detail_level': this.state.detail_level};
 
     trackPromise(
-      fetch('/flask-backend/summary', {
-        method: 'POST', // or 'PUT'
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data),
-      })
-      .then(response => response.json())
+      axios.post('http://localhost:5000/flask-backend/summary', data)
+      // fetch('/flask-backend/summary', {
+      //   method: 'POST', // or 'PUT'
+      //   headers: {
+      //     'Content-Type': 'application/json',
+      //   },
+      //   body: JSON.stringify(data),
+      // })
+      .then(response => response["data"])
       .then(data => {
         // console.log(data["result"]);
         // var wordSpan = data["result"].split(" ").map((word) => "<span>" + word + "</span>").join(" ");
@@ -157,12 +169,12 @@ class App extends React.Component {
     if (this.state.page === "input") {
       content = <Input getScript = {this.getScript} setVideo={this.setVideo}/>
     } else if (this.state.page === "main") {
-      content = <Main url = {this.state.url} summary={this.state.summary} fullText = {this.getScript}
+      content = <Main title = {this.state.title} url = {this.state.url} summary={this.state.summary} fullText = {this.getScript}
       detail_level={this.state.detail_level} sentSpan={this.state.sentSpan}
         wordSpan={this.state.wordSpan} setPage={this.setPage} editSummary={this.editSummary}
         setDetail={this.setDetail} createSpanSummary={this.createSpanSummary}/>
     } else if (this.state.page === "edit") {
-      content = <Edit url = {this.state.url}
+      content = <Edit title = {this.state.title} url = {this.state.url}
       summary={this.state.summary} editSummary={this.editSummary}
       sentSpan={this.state.sentSpan} createSpanSummary={this.createSpanSummary}
       setPage={this.setPage} fullText={this.state.fullText}

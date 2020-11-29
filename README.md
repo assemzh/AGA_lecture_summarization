@@ -40,7 +40,8 @@ This project was generated with React 17.0.1.
     * cd /react-frontend
     * npm start 
 3. Choose a video with subtitles
-	- Examples: https://www.youtube.com/watch?v=cUS_22_lDiM, https://www.youtube.com/watch?v=R9OCA6UFE-0
+	- Examples: https://www.youtube.com/watch?v=cUS_22_lDiM
+		    https://www.youtube.com/watch?v=R9OCA6UFE-0
 
 ### Classes/Pages/Scripts
 

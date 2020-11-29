@@ -2,6 +2,7 @@ import React from 'react';
 import './App.css';
 import ContentEditable from 'react-contenteditable';
 import ReactPlayer from 'react-player'
+import axios from 'axios';
 
 
 
@@ -24,7 +25,25 @@ class Main extends React.Component {
         this.moveVideo = this.moveVideo.bind(this);
         this.setTimer = this.setTimer.bind(this);
         this.handleImagePress = this.handleImagePress.bind(this);
+        this.exportHTML = this.exportHTML.bind(this);
         // this.findVideo = this.findVideo.bind(this);
+    }
+
+    exportHTML(){
+       var header = "<html xmlns:o='urn:schemas-microsoft-com:office:office' "+
+            "xmlns:w='urn:schemas-microsoft-com:office:word' "+
+            "xmlns='http://www.w3.org/TR/REC-html40'>"+
+            "<head><meta charset='utf-8'><title>Export HTML to Word Document with JavaScript</title></head><body>";
+       var footer = "</body></html>";
+       var sourceHTML = header+document.getElementById("source-html").innerHTML+footer;
+
+       var source = 'data:application/vnd.ms-word;charset=utf-8,' + encodeURIComponent(sourceHTML);
+       var fileDownload = document.createElement("a");
+       document.body.appendChild(fileDownload);
+       fileDownload.href = source;
+       fileDownload.download = 'YTsummary.docx';
+       fileDownload.click();
+       document.body.removeChild(fileDownload);
     }
 
     handleImagePress(event) {
@@ -59,15 +78,15 @@ class Main extends React.Component {
             console.log(" Input to wiki:");
             // console.log({selectedWord: event.target.textContent});
             const data = {selectedWord: event.target.textContent};
-
-            fetch('/flask-backend/wiki', {
-                method: 'POST', // or 'PUT'
-                headers: {
-                'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(data),
-            })
-            .then(response => response.json())
+            axios.post('http://localhost:5000/flask-backend/wiki', data)
+            // fetch('/flask-backend/wiki', {
+            //     method: 'POST', // or 'PUT'
+            //     headers: {
+            //     'Content-Type': 'application/json',
+            //     },
+            //     body: JSON.stringify(data),
+            // })
+            .then(response => response['data'])
             .then(data => {
                 // console.log(data["url"]);
                 this.setState({selectedWord: data["keyword"]})
@@ -163,18 +182,11 @@ class Main extends React.Component {
             <div className="container-fluid min-vh-100">
                 <div className="row">
                     <div className="col-6 video-col">
-                        {/* <div className="row video-container">
-                            <iframe title="video"
-                            src="https://www.youtube.com/embed/tgbNymZ7vqY"
-                            className="video"/>
-                        </div> */}
                         {component}
                         <div className="row video-info-container">
                             <div>
-                                <h4 className="subtitle">Title</h4>
-                                Author
+                                <h5 className="subtitle"> {this.props.title }</h5>
                                 <br/>
-                                # Visualizations
                             </div>
 
                         </div>
@@ -194,9 +206,6 @@ class Main extends React.Component {
                                             {name}
                                         </button>
                                     ))}
-                                    {/* <button type="button" className="btn btn-light detail-btn">Low</button>
-                                    <button type="button" className="btn btn-light detail-btn">Medium</button>
-                                    <button type="button" className="btn btn-light detail-btn">High</button> */}
                                 </div>
                             </div>
                             </div>
@@ -215,6 +224,8 @@ class Main extends React.Component {
                     <div className="col-6 text-col">
                         <div className="container">
                             <div className="summary-header">
+
+                            <button type="button" className="btn btn-success mr-1" id="btn-export" onClick={() => this.exportHTML()}>Export</button>
                                 <button type="button" className="btn btn-danger"
                                 onClick={() => this.props.setPage("edit")}>Show Original Text</button>
                             </div>
@@ -234,15 +245,19 @@ class Main extends React.Component {
                                 :
                                 <div/>
                                 }
+                                <div class="border-bottom"> <h4 class="d-flex justify-content-center">Summary</h4>
+                                  <i class="d-flex justify-content-center">Click to navigate and double-click to see the definition.</i>
+                                </div>
+                                <div class="container pt-3">
                                 <ContentEditable
                                 innerRef={this.ContentEditable}
-
+                                id = 'source-html'
                                 // html={this.props.summary}
                                 html={(this.props.sentSpan === undefined) ? "Summarizing..." : this.props.sentSpan}
                                 // disabled={false}
                                 disabled={true}
                                 onChange={this.props.editSummary}/>
-
+                                </div>
                             </div>
                         </div>
 
