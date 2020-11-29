@@ -85,7 +85,9 @@ class App extends React.Component {
 
   createSpanSummary(value) {
     console.log(" Input to summarizer:");
-
+    if (!value) {
+      value = 0.4
+    }
     const data = {'fullText': this.state.fullText, 'detail_level': value};
     trackPromise(
       axios.post('https://aga-sum.herokuapp.com/flask-backend/summary', data)
