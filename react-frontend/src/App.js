@@ -4,7 +4,6 @@ import Input from './Input.js';
 import Main from './Main.js';
 import Edit from './Edit.js';
 import { trackPromise } from 'react-promise-tracker';
-import $ from 'jquery'
 import axios from 'axios';
 
 
@@ -33,10 +32,8 @@ class App extends React.Component {
     this.editFullText = this.editFullText.bind(this);
     this.createSpanSummary = this.createSpanSummary.bind(this);
     this.setDetail = this.setDetail.bind(this);
-    // this.setFullText = this.setFullText.bind(this);
 
     this.getScript = this.getScript.bind(this);
-    // this.checkSent = this.checkSent.bind(this);
   }
 
 
@@ -44,14 +41,7 @@ class App extends React.Component {
     var txt = []
     var newUrl = "http://www.youtube.com/watch?v=" + vid
     const data = {'url': newUrl};
-    axios.post('http://localhost:5000/flask-backend/get-script', data)
-    // fetch('/flask-backend/get-script', {
-    //     method: 'POST', // or 'PUT'
-    //     headers: {
-    //         'Content-Type': 'application/json',
-    //     },
-    //     body: JSON.stringify(data),
-    //     })
+    axios.post('https://aga-sum.herokuapp.com/flask-backend/get-script', data)
         .then(response => response["data"])
         .then(data => {
         console.log(data);
@@ -82,14 +72,7 @@ class App extends React.Component {
     var newUrl = "http://www.youtube.com/watch?v=" + vid
     this.setState({url: newUrl, page: "main"});
     const data = {'vid': vid}
-    axios.post('http://localhost:5000/flask-backend/title', data)
-    // fetch('/flask-backend/title', {
-    //   method: 'POST', // or 'PUT'
-    //   headers: {
-    //     'Content-Type': 'application/json',
-    //   },
-    //   body: JSON.stringify(data),
-    // })
+    axios.post('https://aga-sum.herokuapp.com/flask-backend/title', data)
     .then(response => response["data"])
     .then(data => {
       // console.log('title', data["title"]);
@@ -102,27 +85,17 @@ class App extends React.Component {
 
   createSpanSummary() {
     console.log(" Input to summarizer:");
-    // console.log(this.state);
-    const data = {'fullText': this.state.fullText, 'detail_level': this.state.detail_level};
 
+    const data = {'fullText': this.state.fullText, 'detail_level': this.state.detail_level};
+    console.log(data);
     trackPromise(
-      axios.post('http://localhost:5000/flask-backend/summary', data)
-      // fetch('/flask-backend/summary', {
-      //   method: 'POST', // or 'PUT'
-      //   headers: {
-      //     'Content-Type': 'application/json',
-      //   },
-      //   body: JSON.stringify(data),
-      // })
+      axios.post('https://aga-sum.herokuapp.com/flask-backend/summary', data)
       .then(response => response["data"])
       .then(data => {
-        // console.log(data["result"]);
-        // var wordSpan = data["result"].split(" ").map((word) => "<span>" + word + "</span>").join(" ");
         var sentSpan = data["result"].split(".").map((sent) =>
         sent.split(" ").map((word) => "<span style='cursor:pointer' class=" +
         this.state.timestamps[this.state.fullText.findIndex(element => (sent.includes(element)))] +
         ">" + word + "</span>").join(" ") + ".").join("");
-        // this.setState({wordSpan: wordSpan});
         this.setState({sentSpan: sentSpan});
         this.setState({summary: data["result"]});
       })
@@ -134,12 +107,7 @@ class App extends React.Component {
 
 
   editSummary(event) {
-    // this.setState({summary: event.target.value});
-    // var wordSpan = event.target.value.split(" ").map((word) => "<span>" + word + "</span>").join(" ");
-    // var sentSpan = event.target.value.split(".").map((sent) => "<span>" + sent + "</span>").join(".");
-    // this.setState({wordSpan: wordSpan});
     this.setState({sentSpan: event.target.value});
-
   }
 
   setDetail(value) {

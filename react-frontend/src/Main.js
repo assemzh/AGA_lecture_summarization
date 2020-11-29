@@ -78,7 +78,7 @@ class Main extends React.Component {
             console.log(" Input to wiki:");
             // console.log({selectedWord: event.target.textContent});
             const data = {selectedWord: event.target.textContent};
-            axios.post('http://localhost:5000/flask-backend/wiki', data)
+            axios.post('https://aga-sum.herokuapp.com/flask-backend/wiki', data)
             // fetch('/flask-backend/wiki', {
             //     method: 'POST', // or 'PUT'
             //     headers: {
@@ -128,12 +128,6 @@ class Main extends React.Component {
 
     findVideo(url) {
         url = url.replace("watch?v=", "embed/")
-        // console.log("findVideo")
-        // var vid = url.split('v=')[1]
-        // var ampersandPosition = vid.indexOf('&')
-        // if(ampersandPosition !== -1) {
-        //     vid = vid.substring(0, ampersandPosition)
-        // }
         var component = <div className="row video-container">
                             <ReactPlayer ref={player => {this.player = player}}
                                         url = {this.props.url}
