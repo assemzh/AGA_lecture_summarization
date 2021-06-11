@@ -20,9 +20,12 @@
 
 ### AGA - Aitolkyn Baigutanova, Gabriel Lima, Assem Zhunis
 
+
 Automatic Video Summarization is an interactive platform for automatic summarization of lectures.
 
 This project was generated with React 17.0.1.
+
+Prototype link: https://bit.ly/3waOHcd
 
 ### Instructions
  1. Run the back end:
